@@ -1,7 +1,7 @@
 #SidePanel {
     background-color: red;
-    width: 15%;
-    height: 300px;
+    width: 15vw;
+    height: 100vh;
     margin: 0px;
     padding: 0px;
     float: inline-start;
@@ -10,8 +10,8 @@
     background-color: blue;
     margin: 0px;
     padding: 0px;
-    width: 85%;
-    height: 300px;
+    width: 85vw;
+    height: 100vh;
     float: inline-end;
 }
 body{
