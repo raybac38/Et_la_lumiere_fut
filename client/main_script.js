@@ -1,4 +1,4 @@
-import * as THREE from './three/three.module.js';
+import * as THREE from '/three.js';
 //import { generate_terrain_block } from './render_script/terrain';
 
 console.log("JS charger");
@@ -16,13 +16,8 @@ container.appendChild(renderer.domElement);
 
 ///Limière
 
-const light = new THREE.AmbientLight(0xff0000, 0.5); 
+const light = new THREE.AmbientLight(0xffffff, 0.5); 
 scene.add(light);
-
-
-
-
-
 
 /// Hello world
 
@@ -49,6 +44,7 @@ camera.position.z = 5;
 function animate(){
     requestAnimationFrame(animate);
     console.log("Une nouvelle secne");
+    cube.rotation.y += 0.1;
     renderer.render(scene, camera);
 }
 
