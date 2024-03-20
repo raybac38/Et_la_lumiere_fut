@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="main_style.css">
   </head>
   <body>
-    <div id="SidePanel"></div>   
+    <div id="SidePanel">
+      <div id="TailleOption">
+        Taille de la carte 
+        <input min="4" value="8" type="number"> x
+        <input min="4" value="8" type="number"> y
+      </div>
+    </div>   
     <div id="Scene"></div>   
     <script  src="/three.js"></script>
     <script type="module" src="./main_script.js"></script>
