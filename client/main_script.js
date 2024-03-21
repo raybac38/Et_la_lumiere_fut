@@ -16,16 +16,25 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( container.clientWidth, container.clientHeight );
 container.appendChild(renderer.domElement);
 
-///Limière
 
-const light = new THREE.AmbientLight(0xffffff, 2.5); 
-light.castShadow = true;
-scene.add(light);
+///Limière
+const ambiantlight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambiantlight);
+
+const directionallight = new THREE.DirectionalLight(0xaaaaaa, 2.5); 
+directionallight.castShadow = true;
+
+directionallight.position.set( 1, 2, 1 ).setLength( 10 );
+scene.add(directionallight);
+
+
+const helper = new THREE.DirectionalLightHelper(directionallight);
+scene.add(helper);
 
 /// Hello world
 
 
-var taillex = 10;
+var taillex = 8;
 var tailley = 8;
 
 let id = 0;
@@ -65,6 +74,7 @@ renderer.shadowMap.type = THREE.BasicShadowMap;
 function animate(){
     requestAnimationFrame(animate);
     console.log("Une nouvelle secne");
+    directionallight.rotation.x += 0.03;
     renderer.render(scene, camera);
 }
 

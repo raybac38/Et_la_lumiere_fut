@@ -10,46 +10,83 @@ function generate_tuile(hauteur, name)
 	var geometry = new THREE.BufferGeometry();
 
     var verticies = new Float32Array([
-        0, bottom_face_value, 0,    // a 0
-        1, bottom_face_value, 0,    // b 1
-        1, hauteur, 0,    // c 2
-        0, hauteur, 0,    // d 3
+        0, hauteur, 0,
+        0, hauteur, 1,
+        1, hauteur, 1,
 
-        0, bottom_face_value, 1,    // e 4
-        1, bottom_face_value, 1,    // f 5
-        1, hauteur, 1,    // g 6
-        0, hauteur, 1     // h 7
+        0, hauteur, 0,
+        1, hauteur, 1,
+        1, hauteur, 0,
+
+        0, bottom_face_value, 1,
+        1, hauteur, 1,
+        0, hauteur, 1,
+
+        0, bottom_face_value, 1,
+        1, bottom_face_value, 1,
+        1, hauteur, 1,
+
+        0, bottom_face_value, 0,
+        0, hauteur, 0,
+        1, hauteur, 0,
+
+        0, bottom_face_value, 0,
+        1, hauteur, 0,
+        1, bottom_face_value, 0,
+
+        0, bottom_face_value, 0,
+        1, bottom_face_value, 1,
+        0, bottom_face_value, 1,
+
+        0, bottom_face_value, 0,
+        1, bottom_face_value, 0,
+        1, bottom_face_value, 1,
+
+        0, bottom_face_value, 0,
+        0, hauteur, 1,
+        0, hauteur, 0,
+
+        0, bottom_face_value, 0,
+        0, bottom_face_value, 1,
+        0, hauteur, 1,  
+
+        1, bottom_face_value, 0,
+        1, hauteur, 0,
+        1, hauteur, 1,
+
+        1, bottom_face_value, 0,
+        1, hauteur, 1,
+        1, bottom_face_value, 1
+
+
     ])
 
     var indices = [
-        //face du bas
+        
         0, 1, 2,
-        0, 2, 3,
+        3, 4, 5,
 
-        //face du devant
-        0, 4, 5,
-        0, 5, 1,
+        6, 7, 8,
+        9, 10, 11,
 
-        //face arriere
-        3, 2, 6,
-        3, 6, 7,
+        12, 13, 14,
+        15, 16, 17,
 
-        //face du haut
-        4, 7, 6,
-        4, 6, 5,
+        18, 19, 20,
+        21, 22, 23,
 
-        //face de droite
-        1, 5, 6,
-        1, 6, 2,
+        24, 25, 26,
+        27, 28, 29,
 
-        //face de gauche
-        0, 3, 7,
-        0, 7, 4
+        30, 31, 32, 
+        33, 34, 35
     ]
 
     geometry.setIndex(indices);
     geometry.setAttribute('position', new THREE.BufferAttribute(verticies, 3));
-    var material = new THREE.MeshPhysicalMaterial({color: 0xaaaaaa});
+    geometry.computeVertexNormals(); 
+
+    var material = new THREE.MeshStandardMaterial({});
     var mesh = new THREE.Mesh(geometry, material);
     mesh.name = name;
     return mesh;
