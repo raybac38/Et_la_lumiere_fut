@@ -18,7 +18,8 @@ container.appendChild(renderer.domElement);
 
 ///Limière
 
-const light = new THREE.AmbientLight(0xffffff, 0.5); 
+const light = new THREE.AmbientLight(0xffffff, 2.5); 
+light.castShadow = true;
 scene.add(light);
 
 /// Hello world
@@ -37,6 +38,8 @@ for (let index_x = 0; index_x < taillex; index_x++)
         id++;
         obj.position.set(index_x - 0.5*taillex, -2, index_y - 0.5*tailley);
         obj.scale.set(0.9, 1, 0.9);
+        obj.castShadow = true;
+        obj.receiveShadow = true;
         scene.add(obj);
     }
 }
@@ -54,6 +57,10 @@ camera.rotation.x = -35 * (Math.PI / 180);
 
 
 /// Rendu
+
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.BasicShadowMap;
+
 
 function animate(){
     requestAnimationFrame(animate);

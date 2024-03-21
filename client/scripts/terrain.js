@@ -49,7 +49,7 @@ function generate_tuile(hauteur, name)
 
     geometry.setIndex(indices);
     geometry.setAttribute('position', new THREE.BufferAttribute(verticies, 3));
-    var material = new THREE.MeshStandardMaterial({color: 0xaaaaaa});
+    var material = new THREE.MeshPhysicalMaterial({color: 0xaaaaaa});
     var mesh = new THREE.Mesh(geometry, material);
     mesh.name = name;
     return mesh;
