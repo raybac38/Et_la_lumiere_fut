@@ -1,5 +1,7 @@
 import * as THREE from '/three.js';
-//import { generate_terrain_block } from './render_script/terrain';
+
+
+import * as TERRAIN from './scripts/terrain.js';
 
 console.log("JS charger");
 
@@ -10,7 +12,7 @@ var container = document.getElementById("Scene");
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, container.clientWidth / container.clientHeight,0.1, 1000);
 
-const renderer = new THREE.WebGL1Renderer();
+const renderer = new THREE.WebGLRenderer();
 renderer.setSize( container.clientWidth, container.clientHeight );
 container.appendChild(renderer.domElement);
 
@@ -22,18 +24,30 @@ scene.add(light);
 /// Hello world
 
 
+var taillex = 10;
+var tailley = 8;
+
+let id = 0;
+
+for (let index_x = 0; index_x < taillex; index_x++) 
+{
+    for(let index_y = 0; index_y <tailley; index_y++)
+    {
+        let obj = TERRAIN.generate_tuile(0,5, id);
+        id++;
+        obj.position.set(index_x - 0.5*taillex, -2, index_y - 0.5*tailley);
+        obj.scale.set(0.9, 1, 0.9);
+        scene.add(obj);
+    }
+}
 
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1);
-const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
-const cube = new THREE.Mesh( geometry, material );
-cube.name = "co";
-
-scene.add( cube );
 
 //scene.add = generate_terrain_block();
 
-camera.position.z = 5;
+camera.position.z = 6;
+camera.position.y = 2;
+camera.rotation.x = -35 * (Math.PI / 180);
 
 
 /// Skybox
@@ -44,10 +58,8 @@ camera.position.z = 5;
 function animate(){
     requestAnimationFrame(animate);
     console.log("Une nouvelle secne");
-    cube.rotation.y += 0.1;
     renderer.render(scene, camera);
 }
 
 animate();
 
-export { scene as SCENE}
