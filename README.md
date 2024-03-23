@@ -1,6 +1,6 @@
 # Et_la_lumiere_fut
 
-##Principe du jeu : 
+## Principe du jeu : 
 
 Allumer toute les rue
 Aucun lampadaire ne peut éclairer un autre
@@ -16,7 +16,7 @@ Projet de jeu logique
 
 	
 
-##Spécification des fichiers 
+## Spécification des fichiers 
 
 Pour utiliser un format de fichier lisible par un humain, nous utiliserons le standard JSON
 
@@ -71,7 +71,7 @@ Dans un premier temps, nous oublirons la contrainte de couleur.
 
 
 
-##Programme de génération de village
+## Programme de génération de village
 
 Ce programme prend trois argument en entrée : (unsigned) taille-x, (unsigned) taille-y et "name" 
 Ce programme genère un fichier JSON contenant un plan de la ville sous format JSON
@@ -87,14 +87,14 @@ Le coeur de ce programme est de la génération procédurale ^^ Tu vas voir, c'e
 
 Il y a plusieur méthode pour atteindre l'objectif
 
-###Generation par pose de lampadaire
+### Generation par pose de lampadaire
 
 C'est la plus simple, mais aussi la moins intéréssante :
 tu part de la solution pour généré la carte
 
 Tu pose certain nombre de lampadaire sur la carte, et tu part d'eux pour définir les rue. Cela utilise beaucoup d'aléatoire.
 
-###Generation par Wave Function Collapse
+### Generation par Wave Function Collapse
 
 Plus dur, mais beaucoup plus intéréssante
 
@@ -105,12 +105,12 @@ https://robertheaton.com/2018/12/17/wavefunction-collapse-algorithm/
 Ce site explique bien le principe
 
 
-/!\ Pour les deux méthodes de génération, il y a une limitation
+/!\\ Pour les deux méthodes de génération, il y a une limitation
 
 Il ne peut avoir de croissement entre deux rue en diagonal, car cela crée un croissement qui n'est pas sur le centre d'une tuile
 Cela crée des cartes trop compliquer
 
-##Programme de traduction logique
+## Programme de traduction logique
 
 Ce programme prend en entrée le fichier JSON, en crée un ensemble de clause logique pour le SAT Solveur sous le format DIMAC
 
