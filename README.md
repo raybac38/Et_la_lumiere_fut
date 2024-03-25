@@ -7,7 +7,7 @@ Aucun lampadaire ne peut éclairer un autre
 Deux couleur identique ne peuvent se croiser a une intersection
 
 
-
+----------------
 
 
 Projet de jeu logique 
