@@ -3,6 +3,11 @@ import * as THREE from '/three.js';
 
 import * as TERRAIN from './scripts/terrain.js';
 
+
+
+var socket = io();
+
+
 console.log("JS charger");
 
 // Setup de THREE JS
@@ -10,7 +15,7 @@ console.log("JS charger");
 var container = document.getElementById("Scene");
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, container.clientWidth / container.clientHeight,0.1, 1000);
+const camera = new THREE.PerspectiveCamera( 60, container.clientWidth / container.clientHeight,0.1, 1000);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( container.clientWidth, container.clientHeight );
@@ -18,6 +23,7 @@ container.appendChild(renderer.domElement);
 
 
 ///Limière
+
 const ambiantlight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambiantlight);
 
@@ -54,7 +60,6 @@ for (let index_x = 0; index_x < taillex; index_x++)
 }
 
 
-
 //scene.add = generate_terrain_block();
 
 camera.position.z = 6;
@@ -71,12 +76,57 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 
 
-function animate(){
-    requestAnimationFrame(animate);
-    console.log("Une nouvelle secne");
-    directionallight.rotation.x += 0.03;
-    renderer.render(scene, camera);
+renderer.render(scene, camera);
+
+
+////////
+
+
+// UI INPUT
+
+const button_generate_new_map = document.getElementById("new_map");
+const drop_box_buttons_prefab = document.getElementsByClassName("prefab_map");
+const button_solve = document.getElementById("solve");
+const drop_box_value = document.getElementById("maps");
+
+const input_field_map_size_x = document.getElementById("taille_x");
+const input_field_map_size_y = document.getElementById("taille_y");
+
+button_generate_new_map.addEventListener('click', () => {
+    Request_New_Map();
+});
+
+button_solve.addEventListener('click', () =>
+{
+    Request_Solve();
+});
+
+for (let i = 0; i < drop_box_buttons_prefab.length; i++) {
+    drop_box_buttons_prefab[i].addEventListener('click', () => {
+        Request_Prefab_Map(drop_box_value.options[drop_box_value.selectedIndex].text);
+    });
 }
 
-animate();
 
+
+
+
+
+//////Socket IO
+
+
+////emition
+
+function Request_New_Map()
+{
+    socket.emit('request_new_map');
+}
+
+function Request_Solve()
+{
+    socket.emit('solve');
+}
+function Request_Prefab_Map(map_name)
+{
+    socket.emit('request_prefab_map', map_name);
+}

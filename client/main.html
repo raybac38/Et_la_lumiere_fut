@@ -1,21 +1,42 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Et la lumière fut !</title>
     <link rel="stylesheet" href="main_style.css">
+    <script src="/node_modules/socket.io"></script>
+    <script src="/three.js"></script>
+    <script type="module" src="./main_script.js"></script>
   </head>
   <body>
     <div id="SidePanel">
+      <button class="button" id="new_map">New map</button>
+      <br>
+      <label for="maps">Prefab map</label>
+      <select name="maps" id="maps">
+        <option value="Map 1" class="prefab_map">Map 1</option>
+	      <option value="Map 2" class="prefab_map">Map 2</option>
+        <option value="Map 3" class="prefab_map">Map 3</option>
+        <option value="Map 4" class="prefab_map">Map 4</option>
+        <option value="Map 5" class="prefab_map">Map 5</option>
+        <option value="Map 6" class="prefab_map">Map 6</option>
+
+      </select> 
+      <br>
+
+
+      <button class="button" id="solve">Solve</button>
       <div id="TailleOption">
-        Taille de la carte 
-        <input min="4" value="8" type="number"> x
-        <input min="4" value="8" type="number"> y
+        Map size
+      <br>
+
+        <input min="4" value="8" id="taille_x" type="number"> x
+      <br>
+      <input min="4" value="8" id="taille_y" type="number"> y
       </div>
     </div>   
     <div id="Scene"></div>   
-    <script src="/three.js"></script>
-    <script type="module" src="./main_script.js"></script>
+
   </body>
 </html>

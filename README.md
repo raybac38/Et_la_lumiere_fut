@@ -51,6 +51,7 @@ typedef struct {
     int nbTuiles;
 } Ville;
 
+La valeur dans "rue" correspond a l'ID de la tuile qui est relier
 
 Le village est composé de "tuile" carrer, et on nommera "croisement" le centre de celle ci.
 
