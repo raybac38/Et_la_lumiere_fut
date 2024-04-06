@@ -1,8 +1,8 @@
 {
-  "name": "et_la_lumiere_fut",
+  "name": "lumiere",
   "version": "1.0.0",
-  "description": "petit_jeu",
-  "main": "server.js",
+  "description": "Ilumine la ville avec des lanterns pour gagner",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +11,6 @@
   "dependencies": {
     "express": "^4.19.2",
     "socket.io": "^4.7.5",
-    "three": "^0.162.0"
+    "three": "^0.163.0"
   }
 }

@@ -1,17 +1,12 @@
-import * as THREE from '/three.js';
-
+import * as THREE from '/three.js'
 
 import * as TERRAIN from './scripts/terrain.js';
 
 
+// Connexion au serveur via Socket.IO
+const socket = io();
 
-var socket = io();
-
-
-console.log("JS charger");
-
-// Setup de THREE JS
-
+// Initialisation de la scène Three.js
 var container = document.getElementById("Scene");
 
 const scene = new THREE.Scene();
@@ -21,8 +16,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( container.clientWidth, container.clientHeight );
 container.appendChild(renderer.domElement);
 
-
-///Limière
+/// Initialisaion de la lumièere
 
 const ambiantlight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambiantlight);
@@ -37,63 +31,56 @@ scene.add(directionallight);
 const helper = new THREE.DirectionalLightHelper(directionallight);
 scene.add(helper);
 
-/// Hello world
 
+///Hello world
 
-var taillex = 8;
-var tailley = 8;
-
-let id = 0;
-
-for (let index_x = 0; index_x < taillex; index_x++) 
-{
-    for(let index_y = 0; index_y <tailley; index_y++)
-    {
-        let obj = TERRAIN.generate_tuile(0,5, id);
-        id++;
-        obj.position.set(index_x - 0.5*taillex, -2, index_y - 0.5*tailley);
-        obj.scale.set(0.9, 1, 0.9);
-        obj.castShadow = true;
-        obj.receiveShadow = true;
-        scene.add(obj);
-    }
-}
-
-
-//scene.add = generate_terrain_block();
+/// position initiale de la camera
 
 camera.position.z = 6;
 camera.position.y = 2;
 camera.rotation.x = -35 * (Math.PI / 180);
 
+/// rendu
 
-/// Skybox
-
-
-/// Rendu
-
+scene.background = new THREE.Color(0x2e4482);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 
-
 renderer.render(scene, camera);
 
+// Gestion des messages du serveur
+socket.on('message', (message) => {
+    console.log('Message du serveur:', message);
+});
 
-////////
+
+/// Gestion dynamique de la fenetre
+
+window.addEventListener( 'resize', onWindowResize, false );
+
+function onWindowResize(){
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.render(scene, camera);
+}
 
 
-// UI INPUT
+/// UI
+
 
 const button_generate_new_map = document.getElementById("new_map");
 const drop_box_buttons_prefab = document.getElementsByClassName("prefab_map");
 const button_solve = document.getElementById("solve");
 const drop_box_value = document.getElementById("maps");
 
-const input_field_map_size_x = document.getElementById("taille_x");
-const input_field_map_size_y = document.getElementById("taille_y");
+var input_field_map_size_x = document.getElementById("taille_x");
+var input_field_map_size_y = document.getElementById("taille_y");
 
 button_generate_new_map.addEventListener('click', () => {
-    Request_New_Map();
+    Request_New_Map(input_field_map_size_x.value, input_field_map_size_y.value);
 });
 
 button_solve.addEventListener('click', () =>
@@ -109,24 +96,21 @@ for (let i = 0; i < drop_box_buttons_prefab.length; i++) {
 
 
 
+////Socket io 
 
-
-
-//////Socket IO
-
-
-////emition
-
-function Request_New_Map()
+function Request_New_Map(size_x, size_y)
 {
-    socket.emit('request_new_map');
+    socket.emit('request_new_map', size_x, size_y);
+}
+
+function Request_Prefab_Map(numero)
+{
+    socket.emit('request_prefab_map', numero)
+    console.log('request prefab map');
 }
 
 function Request_Solve()
 {
-    socket.emit('solve');
-}
-function Request_Prefab_Map(map_name)
-{
-    socket.emit('request_prefab_map', map_name);
+    console.log('request solve');
+    
 }

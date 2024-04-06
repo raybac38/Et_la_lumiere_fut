@@ -4,7 +4,7 @@ import * as THREE from '/three.js';
 
 const bottom_face_value = -20;
 
-function generate_tuile(hauteur, name)
+function generate_base_tuile(hauteur, name)
 {
     console.log("generate_tuile");
 	var geometry = new THREE.BufferGeometry();
@@ -129,4 +129,4 @@ function generate_terrain_block()
     return mesh;
 }
 
-export {generate_terrain_block, generate_tuile};
+export {generate_terrain_block, generate_base_tuile};
