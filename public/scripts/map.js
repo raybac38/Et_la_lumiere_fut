@@ -3,152 +3,13 @@
     Fichier Javascript cerveau logique du jeu
 
 */
+import { Couleurs, Direction } from './constants.js';
 
-const Direction = {
-    NORD: 'nord',
-    NORD_EST: 'nord-est',
-    EST: 'est',
-    SUD_EST: 'sud-est'
-}
+import { Rue } from "./rue.js";
 
-const Couleurs = {
-    BLEU: 'bleu',
-    ROUGE: 'rouge',
-    VERT: 'vert',
-    JAUNE: 'jaune',
-    BLANC: 'blanc'
-}
+import { Croisement } from "./croisement.js";
 
-
-class Lampadaire {
-    constructor(couleur, id) {
-        this.couleur = couleur;
-        this.id = id;
-    }
-
-    CreeLumiere() {
-        let lumiere = new Lumiere(this.couleur, this.id);
-        return lumiere;
-    }
-}
-
-
-class Lumiere {
-
-    constructor(couleur, id) {
-        this.couleur = couleur;
-        this.id = id;
-    }
-}
-
-class Rue {
-    constructor(position_x, position_y, direction) {
-        this.position_x = position_x;
-        this.position_y = position_y;
-
-        this.direction = direction;
-        this.lumieres = [];
-    }
-
-    AjoutLumiere(lumiere) {
-        this.lumieres.push(lumiere);
-    }
-
-    SupprimeLumiere(lumiere) {
-        let indice = this.lumieres.indexOf(lumiere);
-        if (index != -1) {
-            this.lumieres.splice(indice, 1);
-        }
-    }
-
-    Verification() {
-        return this.lumieres.length == 1;
-    }
-
-}
-
-class Croisement {
-    constructor(position_x, position_y) {
-        this.position_x = position_x;
-        this.position_y = position_y;
-
-        this.lumieres = [];
-        this.lampadaire = null;
-    }
-
-
-    AjoutLampadaire(lampadaire) {
-        if (this.lampadaire == null) {
-            this.lampadaire = lampadaire;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    AjoutLumiere(lumiere) {
-        this.lumieres.push(lumiere);
-    }
-
-    SupprimeLumiere(lumiere) {
-        let indice = this.lumieres.indexOf(lumiere);
-        if (indice != -1) {
-            this.lumieres.splice(indice, 1);
-            return true;
-        }
-        return false;
-    }
-
-    SupprimeLampadaire(lampadaire) {
-        this.lampadaire = null;
-    }
-
-    
-
-    Verification() {
-
-        if(this.lumieres.length == 0)
-        {
-            return this.lampadaire != null;
-        }
-        else
-        {
-            for (let lumiere_ref = 0; lumiere_ref < this.lumieres.length; lumiere_ref++) {
-
-                let couleur_ref = this.lumieres[lumiere_ref].couleur;
-    
-                for (let index_lumiere = lumiere_ref + 1; index_lumiere < this.lumieres.length; index_lumiere++) {
-    
-                    if (this.lumieres[index_lumiere].couleur == couleur_ref) return false;
-    
-                }
-    
-            }
-            return true;
-        }
-
-    }
-}
-
-function OffsetToDirection(offset_x, offset_y) {
-    if (offset_x == 0 && (offset_y == 1 || offset_y == -1)) {
-        return Direction.NORD;
-    }
-    if (offset_x == 1 && offset_y == 1 || offset_x == -1 && offset_y == -1) {
-        return Direction.SUD_EST;
-    }
-    if (offset_x == 1 || offset_x == -1 && offset_y == 0) {
-        return Direction.EST;
-    }
-    if (offset_x == -1 && offset_y == 1 || offset_x == 1 && offset_y == -1) {
-        return Direction.NORD_EST;
-    }
-    throw new console.error('Direction non reconnu');
-
-}
-
+import { Lumiere, Lampadaire } from './lumiere.js';
 
 class Map {
 
@@ -165,6 +26,23 @@ class Map {
 
         }
         return tableau;
+    }
+
+    OffsetToDirection(offset_x, offset_y) {
+        if (offset_x == 0 && (offset_y == 1 || offset_y == -1)) {
+            return Direction.NORD;
+        }
+        if (offset_x == 1 && offset_y == 1 || offset_x == -1 && offset_y == -1) {
+            return Direction.SUD_EST;
+        }
+        if ((offset_x == 1 || offset_x == -1) && offset_y == 0) {
+            return Direction.EST;
+        }
+        if (offset_x == -1 && offset_y == 1 || offset_x == 1 && offset_y == -1) {
+            return Direction.NORD_EST;
+        }
+        throw new console.error('Direction non reconnu');
+    
     }
 
     //Méthode de construction
@@ -293,7 +171,7 @@ class Map {
         const PropagationLumiere = (starting_x, starting_y, offset_x, offset_y, lumiere) => {
             let x = starting_x + offset_x;
             let y = starting_y + offset_y;
-            let direction_reference = OffsetToDirection(offset_x, offset_y);
+            let direction_reference = this.OffsetToDirection(offset_x, offset_y);
 
 
             while (this.IsDefined(x, y) && !this.IsNull(x, y) && (!(this.grille[x][y] instanceof Rue) || this.grille[x][y].direction == direction_reference)) {
@@ -320,7 +198,7 @@ class Map {
 
     }
 
-    SupprimeLampadaire(lampadaire) {
+    SupprimeLampadaire(lampadaire, x, y) {
         if (this.grille[x] == undefined || this.grille[x][y] == undefined) false;
 
         if (this.grille[x][y] == null) return false;
@@ -356,4 +234,59 @@ class Map {
     }
 
 
+    
 }
+
+//// Faire une fonction pour lire le format JSON d'envoie 
+
+
+//// Faire une fonction qui permet de savoir ce qu'il y a a l'emplacement x / y 
+/// Réponse possible => croissement, couleur(s), lampadaire
+/// rue, couleur
+/// vide
+
+
+
+/// programme de teste 
+
+
+
+
+let map = new Map(3, 2);
+
+
+map.AjoutCroisement(1, 1);
+map.AjoutCroisement(1, 3);
+map.AjoutCroisement(3, 1);
+map.AjoutCroisement(5, 1);
+
+map.AjoutRue(1, 0, Direction.NORD);
+map.AjoutRue(1, 2, Direction.NORD);
+
+map.AjoutRue(2, 2, Direction.NORD_EST);
+
+map.AjoutRue(4, 1, Direction.EST);
+map.AjoutRue(6, 1, Direction.EST);
+
+map.AjoutRue(5, 0, Direction.NORD);
+
+console.log(map.Verification());
+
+let premier_lampadaire = new Lampadaire(0, Couleurs.BLEU);
+let second_lampadaire = new Lampadaire(1, Couleurs.BLEU);
+
+map.AjoutLampadaire(1, 3, premier_lampadaire)
+map.AjoutLampadaire(5, 1, second_lampadaire);
+
+console.log(map.Verification());
+
+map.SupprimeLampadaire(premier_lampadaire, 1, 3);
+
+console.log(map.Verification());
+
+
+map.AffichageConsole();
+
+
+
+

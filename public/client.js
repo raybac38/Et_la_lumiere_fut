@@ -114,3 +114,6 @@ function Request_Solve()
     console.log('request solve');
     
 }
+
+
+export {scene} 
