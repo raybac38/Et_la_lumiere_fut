@@ -11,7 +11,7 @@ import { Croisement } from "./croisement.js";
 
 import { Lumiere, Lampadaire } from './lumiere.js';
 
-class Map {
+export class Map {
 
     constructor(size_x, size_y) {
         this.size_x = size_x * 2 + 1;
@@ -42,15 +42,22 @@ class Map {
             return Direction.NORD_EST;
         }
         throw new console.error('Direction non reconnu');
-    
+
     }
 
     //Méthode de construction
     AjoutCroisement(position_x, position_y) {
         /// Est ce qu'il y a une place de libre  ? important ca non ? 
 
+        if(this.grille[position_x] === undefined || this.grille[position_x][position_y] === undefined)
+        {
+            console.log("Unable to add Croisement, undefined space");
+            return false;
+        }
+
+        
         if (this.grille[position_x][position_y] != null) {
-            ///loupé, plein
+            console.log("Unable to add Croisement, space already taken");
             return false;
         }
 
@@ -109,8 +116,7 @@ class Map {
     }
 
     IsDefined(x, y) {
-        if(this.grille[x] != undefined)
-        {
+        if (this.grille[x] != undefined) {
             return this.grille[x][y] != undefined;
         }
         return false;
@@ -123,15 +129,20 @@ class Map {
     //Méthode de construction
     AjoutRue(position_x, position_y, direction) {
         /// Est ce qu'il y a une place de libre  ? important ca non ? 
+        if(this.grille[position_x] === undefined || this.grille[position_x][position_y] === undefined) 
+        {
+          console.log("Unable to add Rue, undefined");
+          return false;  
+        } // Y'a personne, c'est le VIDE
 
         if (this.grille[position_x][position_y] != null) {
-            ///loupé, plein
+            console.log("Unable to add Rue, space already taken");
             return false;
         }
 
         let rue = new Rue(position_x, position_y, direction);
         this.grille[position_x][position_y] = rue;
-        return true; IsCaseCroisement
+        return true;
     }
 
 
@@ -141,8 +152,7 @@ class Map {
             for (let index_y = 0; index_y < this.size_y; index_y++) {
 
 
-                if (!this.IsNull(index_x, index_y) && !this.grille[index_x][index_y].Verification())
-                {
+                if (!this.IsNull(index_x, index_y) && !this.grille[index_x][index_y].Verification()) {
                     console.log('Verification échoué a : ' + index_x + ' ' + index_y);
                     return false;
                 }
@@ -155,7 +165,7 @@ class Map {
 
 
     AjoutLampadaire(x, y, lampadaire) {
-        if (this.grille[x] == undefined || this.grille[x][y] == undefined) false;
+        if (this.grille[x] === undefined || this.grille[x][y] === undefined) false;
 
         if (this.grille[x][y] == null) return false;
         if (!this.grille[x][y] instanceof Croisement) return false;
@@ -234,7 +244,48 @@ class Map {
     }
 
 
+    ///// Programme de teste
+
+
+    teste_map() {
+
+
+
+        this.AjoutCroisement(1, 1);
+        this.AjoutCroisement(1, 3);
+        this.AjoutCroisement(3, 1);
+        this.AjoutCroisement(5, 1);
     
+        this.AjoutRue(1, 0, Direction.NORD);
+        this.AjoutRue(1, 2, Direction.NORD);
+    
+        this.AjoutRue(2, 2, Direction.NORD_EST);
+    
+        this.AjoutRue(4, 1, Direction.EST);
+        this.AjoutRue(6, 1, Direction.EST);
+    
+        this.AjoutRue(5, 0, Direction.NORD);
+    
+        console.log(this.Verification());
+    
+        let premier_lampadaire = new Lampadaire(0, Couleurs.BLEU);
+        let second_lampadaire = new Lampadaire(1, Couleurs.BLEU);
+    
+        this.AjoutLampadaire(1, 3, premier_lampadaire)
+        this.AjoutLampadaire(5, 1, second_lampadaire);
+    
+        console.log(this.Verification());
+    
+        this.SupprimeLampadaire(premier_lampadaire, 1, 3);
+    
+        console.log(this.Verification());
+    
+    
+        this.AffichageConsole();
+    }
+
+
+
 }
 
 //// Faire une fonction pour lire le format JSON d'envoie 
@@ -244,48 +295,6 @@ class Map {
 /// Réponse possible => croissement, couleur(s), lampadaire
 /// rue, couleur
 /// vide
-
-
-
-/// programme de teste 
-
-
-
-
-let map = new Map(3, 2);
-
-
-map.AjoutCroisement(1, 1);
-map.AjoutCroisement(1, 3);
-map.AjoutCroisement(3, 1);
-map.AjoutCroisement(5, 1);
-
-map.AjoutRue(1, 0, Direction.NORD);
-map.AjoutRue(1, 2, Direction.NORD);
-
-map.AjoutRue(2, 2, Direction.NORD_EST);
-
-map.AjoutRue(4, 1, Direction.EST);
-map.AjoutRue(6, 1, Direction.EST);
-
-map.AjoutRue(5, 0, Direction.NORD);
-
-console.log(map.Verification());
-
-let premier_lampadaire = new Lampadaire(0, Couleurs.BLEU);
-let second_lampadaire = new Lampadaire(1, Couleurs.BLEU);
-
-map.AjoutLampadaire(1, 3, premier_lampadaire)
-map.AjoutLampadaire(5, 1, second_lampadaire);
-
-console.log(map.Verification());
-
-map.SupprimeLampadaire(premier_lampadaire, 1, 3);
-
-console.log(map.Verification());
-
-
-map.AffichageConsole();
 
 
 

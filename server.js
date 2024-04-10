@@ -100,4 +100,4 @@ function OpenJSONFile(name) {
 
 }
 
-OpenJSONFile('./jeu_de_teste/teste_1.json');
+//OpenJSONFile('./jeu_de_teste/teste_1.json');

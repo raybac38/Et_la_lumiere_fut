@@ -2,6 +2,8 @@ import * as THREE from '/three.js'
 
 import * as TERRAIN from './scripts/terrain.js';
 
+import * as MAP from './scripts/map.js';
+
 
 // Connexion au serveur via Socket.IO
 const socket = io();
@@ -116,4 +118,21 @@ function Request_Solve()
 }
 
 
+let map = new MAP.Map(3,3);
+
 export {scene} 
+
+
+map.teste_map();
+
+console.log(map);
+
+camera.position.x = 3.5;
+
+function animate() {
+	requestAnimationFrame( animate );
+
+	renderer.render( scene, camera );
+}
+
+animate();
