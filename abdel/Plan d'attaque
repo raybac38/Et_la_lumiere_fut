@@ -1,0 +1,28 @@
+Un script ENTRE .txt
+
+Un script SORTIE .j'en sais rien, c'est du dimac
+
+
+
+
+
+enum Direction
+{
+	NORD, NORD-EST, EST, SUD-EST
+}
+
+struct Map
+{
+	Case * cases;
+}
+
+struct Case
+{
+	bool is_rue;
+	Direction direction;
+	
+	bool is_croisement;
+}
+
+
+
