@@ -81,6 +81,12 @@ export class Rue {
         if (index != -1) {
             this.lumieres.splice(indice, 1);
         }
+
+    }
+
+    ChangementRueLumiere()
+    {
+        
     }
 
     Verification() {

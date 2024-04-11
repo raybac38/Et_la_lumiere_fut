@@ -96,8 +96,6 @@ for (let i = 0; i < drop_box_buttons_prefab.length; i++) {
     });
 }
 
-
-
 ////Socket io 
 
 function Request_New_Map(size_x, size_y)
@@ -118,9 +116,21 @@ function Request_Solve()
 }
 
 
-let map = new MAP.Map(3,3);
+socket.on('map_data', (data) => 
+{
+    console.log('lecture de la carte de cours');
 
-export {scene} 
+
+
+
+
+
+});
+
+
+/// Partie de teste 
+
+let map = new MAP.Map(3,3);
 
 
 map.teste_map();
@@ -129,10 +139,18 @@ console.log(map);
 
 camera.position.x = 3.5;
 
+/// Affichage
+
 function animate() {
 	requestAnimationFrame( animate );
+
 
 	renderer.render( scene, camera );
 }
 
 animate();
+
+
+//// exportation
+
+export {scene} 

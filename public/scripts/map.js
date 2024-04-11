@@ -49,13 +49,12 @@ export class Map {
     AjoutCroisement(position_x, position_y) {
         /// Est ce qu'il y a une place de libre  ? important ca non ? 
 
-        if(this.grille[position_x] === undefined || this.grille[position_x][position_y] === undefined)
-        {
+        if (this.grille[position_x] === undefined || this.grille[position_x][position_y] === undefined) {
             console.log("Unable to add Croisement, undefined space");
             return false;
         }
 
-        
+
         if (this.grille[position_x][position_y] != null) {
             console.log("Unable to add Croisement, space already taken");
             return false;
@@ -129,10 +128,9 @@ export class Map {
     //Méthode de construction
     AjoutRue(position_x, position_y, direction) {
         /// Est ce qu'il y a une place de libre  ? important ca non ? 
-        if(this.grille[position_x] === undefined || this.grille[position_x][position_y] === undefined) 
-        {
-          console.log("Unable to add Rue, undefined");
-          return false;  
+        if (this.grille[position_x] === undefined || this.grille[position_x][position_y] === undefined) {
+            console.log("Unable to add Rue, undefined");
+            return false;
         } // Y'a personne, c'est le VIDE
 
         if (this.grille[position_x][position_y] != null) {
@@ -255,37 +253,34 @@ export class Map {
         this.AjoutCroisement(1, 3);
         this.AjoutCroisement(3, 1);
         this.AjoutCroisement(5, 1);
-    
+
         this.AjoutRue(1, 0, Direction.NORD);
         this.AjoutRue(1, 2, Direction.NORD);
-    
+
         this.AjoutRue(2, 2, Direction.NORD_EST);
-    
+
         this.AjoutRue(4, 1, Direction.EST);
         this.AjoutRue(6, 1, Direction.EST);
-    
+
         this.AjoutRue(5, 0, Direction.NORD);
-    
+
         console.log(this.Verification());
-    
+
         let premier_lampadaire = new Lampadaire(0, Couleurs.BLEU);
         let second_lampadaire = new Lampadaire(1, Couleurs.BLEU);
-    
+
         this.AjoutLampadaire(1, 3, premier_lampadaire)
         this.AjoutLampadaire(5, 1, second_lampadaire);
-    
+
         console.log(this.Verification());
-    
+
         this.SupprimeLampadaire(premier_lampadaire, 1, 3);
-    
+
         console.log(this.Verification());
-    
-    
+
+
         this.AffichageConsole();
     }
-
-
-
 }
 
 //// Faire une fonction pour lire le format JSON d'envoie 

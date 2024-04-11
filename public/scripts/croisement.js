@@ -1,6 +1,6 @@
 import * as THREE from '/three.js';
 
-import {scene} from '../client.js';
+import { scene } from '../client.js';
 
 
 export class Croisement {
@@ -22,16 +22,15 @@ export class Croisement {
     }
 
     /// Fonction en charge de la génération et de l'ajout dans la scene du croisement
-    GenerationMesh()
-    {
-        
+    GenerationMesh() {
+
         let geometry = new THREE.BufferGeometry();
         geometry.setIndex(hexa_raw_data.triangles);
-        geometry.setAttribute('position', new THREE.BufferAttribute( hexa_raw_data.verticies, 3));
+        geometry.setAttribute('position', new THREE.BufferAttribute(hexa_raw_data.verticies, 3));
 
-        let material = new THREE.MeshStandardMaterial( { color : 0xffffff});
+        let material = new THREE.MeshStandardMaterial({ color: 0xffffff });
         let mesh = new THREE.Mesh(geometry, material);
-        mesh.scale.set(1/4, 1, 1/4);
+        mesh.scale.set(1 / 4, 1, 1 / 4);
 
         this.name = 'c:' + this.position_x + ':' + this.position_y;
 
@@ -49,8 +48,7 @@ export class Croisement {
             this.lampadaire = lampadaire;
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }
@@ -72,26 +70,24 @@ export class Croisement {
         this.lampadaire = null;
     }
 
-    
+
 
     Verification() {
 
-        if(this.lumieres.length == 0)
-        {
+        if (this.lumieres.length == 0) {
             return this.lampadaire != null;
         }
-        else
-        {
+        else {
             for (let lumiere_ref = 0; lumiere_ref < this.lumieres.length; lumiere_ref++) {
 
                 let couleur_ref = this.lumieres[lumiere_ref].couleur;
-    
+
                 for (let index_lumiere = lumiere_ref + 1; index_lumiere < this.lumieres.length; index_lumiere++) {
-    
+
                     if (this.lumieres[index_lumiere].couleur == couleur_ref) return false;
-    
+
                 }
-    
+
             }
             return true;
         }
@@ -99,13 +95,12 @@ export class Croisement {
     }
 
 
-    
+
 
 }
 
 
-class hexa_raw_data
-{
+class hexa_raw_data {
     static verticies = new Float32Array([
         0, 0, 0,
         -0.5, 0, 1.5,
@@ -130,31 +125,31 @@ class hexa_raw_data
         0, 0, 0,
         -0.5, 0, -1.5,
         -1.5, 0, -0.5,
-    
+
         0, 0, 0,
         -1.5, 0, -0.5,
         -1.5, 0, 0.5,
-    
+
         0, 0, 0,
         -1.5, 0, 0.5,
         -.5, 0, 1.5,
 
-    
+
     ]);
 
-    static triangles = 
-    [
-        0, 1, 2,
-        3, 4, 5,
-        6, 7, 8,
+    static triangles =
+        [
+            0, 1, 2,
+            3, 4, 5,
+            6, 7, 8,
 
-        9, 10, 11,
-        12, 13, 14,
-        15, 16, 17,
-        
-        18, 19, 20,
-        21, 22, 23
+            9, 10, 11,
+            12, 13, 14,
+            15, 16, 17,
 
-    ]
+            18, 19, 20,
+            21, 22, 23
+
+        ]
 
 }

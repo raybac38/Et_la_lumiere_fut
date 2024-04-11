@@ -12,6 +12,7 @@ const io = socketIo(server);
 
 const fs = require('fs');
 const { log } = require('console');
+const { escape } = require('querystring');
 
 // Définition du répertoire des fichiers statiques
 app.use(express.static(path.join(__dirname, 'public')));
@@ -35,7 +36,29 @@ io.on('connection', (socket) => {
 
     //// Communication Server / Client ^^ Ma fois, la joute verbale sera forte intéréssante
 
+    socket.on('request_prefab_map', (numero) => {
 
+        console.log(numero);
+        if(0 < numero && numero < 6)
+        {
+            // Numero correct
+            let name = './jeu_de_teste/teste_' + numero + '.txt';
+
+            let data = OpenMapDataFile(name);
+
+
+            if(data === false) console.log("Unable to open file");
+            else
+            {
+                socket.emit('map_data', (data));
+            }
+        }
+        else
+        {
+            console.log("Unable to find prefab map");
+        }
+        
+    });
 
 
 
@@ -58,46 +81,17 @@ server.listen(PORT, () => {
 //// Fonction 
 
 
-function OpenJSONFile(name) {
-    var file;
-    fs.readFile(name, 'utf-8', (err, data) => {
+
+
+function OpenMapDataFile(name)
+{
+    fs.readFile(name, 'utf8', (err, data) => {
         if (err) {
-            console.log("Unable to read json file : " + err);
-            return false;
-        }
-        file = JSON.parse(data);
-
-        let taille = file.taille;
-        if(taille == undefined)
-        {
-            console.log("taille is not find");
-            return false;
-        }
-        let size = taille.x;
-        
-        if(size == undefined)
-        {
-            console.log("size_x undefined");
-            return false;
+          console.error(err);
+          return false;
         }
 
-        size = taille.y;
-
-        if(size == undefined)
-        {
-            console.log("size_y undefined");
-            return false;
-        }
-
-        
-    })
-
-    
-    
-
-
-
-
+        console.log(data);
+        return data;
+      });
 }
-
-//OpenJSONFile('./jeu_de_teste/teste_1.json');
