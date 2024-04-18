@@ -40,6 +40,7 @@ void generer_terrain(Terrain *tablo, double densite) {
             } else if ((x0 % 2) == 0 && (y0 % 2) == 1) {
                 tablo->tab[x0][y0] = '|';
             } else if ((x0 % 2) == 0 && (y0 % 2) == 0 && x0 != tablo->size_max_x - 1 && y0 != tablo->size_max_y - 1) {
+                
                 tablo->tab[x0][y0] = '\\';
             }
         }

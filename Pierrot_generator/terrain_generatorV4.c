@@ -102,7 +102,7 @@ int main() {
         return 1;
     }
 
-    fprintf(fichier, "Generation du terrain\n");
+    fprintf(fichier, "Generation du terrain \n");
 
     generer_terrain(&tablo, 0.2); // Densité de 20% de caractères '#'
 
