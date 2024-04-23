@@ -90,6 +90,32 @@ void generer_terrain(Terrain *tablo, double densite) {
     }
 }
 
+void verif_tabl(Terrain *tablo, double densite) {
+    int x0, y0;
+     for (x0 = 0; x0 < tablo->size_max_x; x0++) {
+        for (y0 = 0; y0 < tablo->size_max_y; y0++) {
+            
+            if (x0 > 0 && y0 > 0 && x0 < tablo->size_max_x && y0 < tablo->size_max_x) {
+                if(tablo->tab[x0][y0] == '#' && tablo->tab[x0-1][y0-1] == ' ' && tablo->tab[x0-1][y0] == ' ') {
+                    if(tablo->tab[x0][y0-1] == ' ' &&  tablo->tab[x0+1][y0] ==' ' && tablo->tab[x0][y0+1] == ' ' && tablo->tab[x0+1][y0+1] == ' ') {
+                        tablo->tab[x0][y0] = ' ';
+                    }
+                }
+            }
+//            if (x0 > 0 && y0 > 0 && x0 < ((tablo->size_max_x)-8)) && y0 < ((tablo->size_max_x)-8) {
+//                if(tablo->tab[x0][y0] = '#' && tablo->tab[x0][y0+2] = '#' tablo->tab[x0][y0+4] = '#' tablo->tab[x0][y0+6] = '#') {
+//                    if (tablo->tab[x0-1][y0])
+//                }
+//            }
+
+            
+
+        }
+    }
+}
+
+
+
 int main() {
     Terrain tablo;
 
@@ -118,6 +144,7 @@ int main() {
     fprintf(fichier, "----------------------------------------------------------------------------------- \n Generation du terrain: \n");
 
     generer_terrain(&tablo, densite); // Densité de caractères '#' selon la densité spécifiée
+    verif_tabl(&tablo, densite);
 
     imprimer_tableau(fichier, tablo, tablo.size_max_x, tablo.size_max_y);
 
