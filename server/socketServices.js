@@ -7,6 +7,7 @@
 /// Chargement de la bibliotech child process
 
 const { exec } = require('child_process');
+
 const { NeutralToneMapping } = require('three');
 
 const fs = require('fs').promises;
@@ -70,7 +71,6 @@ function RunPierroGenerator(taille_x, taille_y, densite, id) {
                 reject(new Error(stderr));
                 return;
             }
-            console.log(stdout);
             resolve(stdout);
         });
     });

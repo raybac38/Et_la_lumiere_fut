@@ -1,7 +1,5 @@
 ///
-
 const socketServices = require('./server/socketServices')
-
 
 // Import des modules
 const express = require('express');
@@ -39,22 +37,3 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
 });
-
-
-//// Fonction 
-
-
-
-
-function OpenMapDataFile(name)
-{
-    fs.readFile(name, 'utf8', (err, data) => {
-        if (err) {
-          console.error(err);
-          return false;
-        }
-
-        console.log(data);
-        return data;
-      });
-}

@@ -3,6 +3,8 @@
     Fichier Javascript cerveau logique du jeu
 
 */
+import { camera } from '../client.js';
+
 import { Couleurs, Direction } from './constants.js';
 
 import { Rue } from "./rue.js";
@@ -16,6 +18,7 @@ export class Map {
     constructor(size_x, size_y) {
         this.size_x = size_x * 2 + 1;
         this.size_y = size_y * 2 + 1;
+        camera.position.set(this.size_x / 2, 1 + (size_x + size_y), this.size_y /2);
         this.grille = this.CreeTableauNull(this.size_x, this.size_y);
     }
 

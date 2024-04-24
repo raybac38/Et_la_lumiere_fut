@@ -38,9 +38,8 @@ scene.add(helper);
 
 /// position initiale de la camera
 
-camera.position.z = 6;
-camera.position.y = 2;
-camera.rotation.x = -35 * (Math.PI / 180);
+
+camera.rotation.x = -90 * (Math.PI / 180);
 
 /// rendu
 
@@ -62,10 +61,10 @@ window.addEventListener( 'resize', onWindowResize, false );
 
 function onWindowResize(){
 
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( container.clientWidth, container.clientHeight );
     renderer.render(scene, camera);
 }
 
@@ -137,7 +136,6 @@ map.teste_map();
 
 console.log(map);
 
-camera.position.x = 3.5;
 
 /// Affichage
 
@@ -153,4 +151,4 @@ animate();
 
 //// exportation
 
-export {scene} 
+export {scene, camera} 

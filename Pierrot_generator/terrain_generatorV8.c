@@ -128,11 +128,8 @@ int main(int argc, char *argv[]) {
 
     Terrain tablo;
 
-    printf( "Largeur : %d\n", x);
-    printf( "Hauteur : %d\n", y);
-    printf( "Densite : %.2lf\n\n", densite);
-    printf( "----------------------------------------------------------------------------------- \n Generation du terrain: \n");
-
+    printf( "%d\n", x);
+    printf( "%d\n", y);
     tablo.size_max_x = x;
     tablo.size_max_y = y;
 
@@ -143,3 +140,9 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
+
+
+
+
+
