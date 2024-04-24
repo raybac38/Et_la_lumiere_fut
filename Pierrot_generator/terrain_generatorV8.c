@@ -10,14 +10,14 @@ typedef struct {
     char tab[MAX_SIZE][MAX_SIZE];
 } Terrain;
 
-void imprimer_tableau(FILE *fichier, Terrain tablo, int x, int y) {
+void imprimer_tableau(Terrain tablo, int x, int y) {
     int x0, y0;
 
     for (x0 = 0; x0 < x; x0++) {
         for (y0 = 0; y0 < y; y0++) {
-            fprintf(fichier, "%c ", tablo.tab[x0][y0]);
+            printf("%c ", tablo.tab[x0][y0]);
         }
-        fprintf(fichier, "\n");
+        printf("\n");
     }
 }
 
@@ -128,19 +128,10 @@ int main(int argc, char *argv[]) {
 
     Terrain tablo;
 
-    FILE *fichier;
-
-    fichier = fopen("et_la_lumiere_futV2.txt", "w");
-
-    if (fichier == NULL) {
-        printf("Erreur lors de l'ouverture du fichier.");
-        return 1;
-    }
-
-    fprintf(fichier, "Largeur : %d\n", x);
-    fprintf(fichier, "Hauteur : %d\n", y);
-    fprintf(fichier, "Densite : %.2lf\n\n", densite);
-    fprintf(fichier, "----------------------------------------------------------------------------------- \n Generation du terrain: \n");
+    printf( "Largeur : %d\n", x);
+    printf( "Hauteur : %d\n", y);
+    printf( "Densite : %.2lf\n\n", densite);
+    printf( "----------------------------------------------------------------------------------- \n Generation du terrain: \n");
 
     tablo.size_max_x = x;
     tablo.size_max_y = y;
@@ -148,8 +139,7 @@ int main(int argc, char *argv[]) {
     generer_terrain(&tablo, densite); // Densité de caractères '#' selon la densité spécifiée
     verif_tabl(&tablo, densite);
 
-    imprimer_tableau(fichier, tablo, tablo.size_max_x, tablo.size_max_y);
+    imprimer_tableau(tablo, tablo.size_max_x, tablo.size_max_y);
 
-    fclose(fichier);
     return 0;
 }

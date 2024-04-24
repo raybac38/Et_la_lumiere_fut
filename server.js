@@ -1,3 +1,8 @@
+///
+
+const socketServices = require('./server/socketServices')
+
+
 // Import des modules
 const express = require('express');
 const http = require('http');
@@ -27,49 +32,7 @@ app.get('/three.js', (req, res) => {
 });
 
 // Gestion de la connexion d'un client via Socket.IO
-io.on('connection', (socket) => {
-    console.log('Un client s\'est connecté');
-
-    // Envoi d'un message à tous les clients lorsqu'un nouveau client se connecte
-    io.emit('message', 'Un nouveau client s\'est connecté');
-
-
-    //// Communication Server / Client ^^ Ma fois, la joute verbale sera forte intéréssante
-
-    socket.on('request_prefab_map', (numero) => {
-
-        console.log(numero);
-        if(0 < numero && numero < 6)
-        {
-            // Numero correct
-            let name = './jeu_de_teste/teste_' + numero + '.txt';
-
-            let data = OpenMapDataFile(name);
-
-
-            if(data === false) console.log("Unable to open file");
-            else
-            {
-                socket.emit('map_data', (data));
-            }
-        }
-        else
-        {
-            console.log("Unable to find prefab map");
-        }
-        
-    });
-
-
-
-
-
-
-    // Déconnexion d'un client
-    socket.on('disconnect', () => {
-        console.log('Un client s\'est déconnecté');
-    });
-});
+io.on('connection', socketServices.HandleConnexion);
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000;
