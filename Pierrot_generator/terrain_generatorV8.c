@@ -15,7 +15,7 @@ void imprimer_tableau(Terrain tablo, int x, int y) {
 
     for (x0 = 0; x0 < x; x0++) {
         for (y0 = 0; y0 < y; y0++) {
-            printf("%c ", tablo.tab[x0][y0]);
+            printf("%c", tablo.tab[x0][y0]);
         }
         printf("\n");
     }
@@ -128,8 +128,8 @@ int main(int argc, char *argv[]) {
 
     Terrain tablo;
 
-    printf( "%d\n", x);
     printf( "%d\n", y);
+    printf( "%d\n", x);
     tablo.size_max_x = x;
     tablo.size_max_y = y;
 

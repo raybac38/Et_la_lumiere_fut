@@ -275,43 +275,55 @@ export class Map {
 
 
     LectureMap(raw_data) {
-
+        if (!raw_data || raw_data.trim() === "") {
+            console.error("Données brutes non définies ou vides.");
+            return; // Sortie de la fonction si les données brutes sont absentes ou vides.
+        }
+    
         console.log(raw_data);
-        if(this.grille !== undefined) { 
-
+    
+        if (this.grille !== undefined) {
             this.SupprimerMap();
         }
-
+    
         let nombre_colone;
         let nombre_ligne;
-
+    
         let data = raw_data.split('\n');
         nombre_colone = parseInt(data[0]);
         nombre_ligne = parseInt(data[1]);
-
-        this.Initialisaion(nombre_colone + 2, nombre_ligne +2 );
-
+    
+        if (isNaN(nombre_colone) || isNaN(nombre_ligne) || nombre_colone <= 0 || nombre_ligne <= 0) {
+            console.error("Dimensions de la grille invalides.");
+            return; // Sortie de la fonction si les dimensions de la grille sont invalides.
+        }
+    
+        this.Initialisaion(nombre_colone + 2, nombre_ligne + 2);
+    
         for (let index_ligne = 2; index_ligne < nombre_ligne + 2; index_ligne++) {
-
             let ligne = data[index_ligne];
-            for (let index_colone = 0; index_colone < nombre_colone + 2; index_colone++) {
-
+            
+            console.log(nombre_colone);
+            console.log(ligne.length);
+            if (ligne.length !== nombre_colone) {
+                console.error("La longueur de la ligne ne correspond pas au nombre de colonnes attendu.");
+                continue; // Passer à la prochaine itération si la longueur de la ligne est incorrecte.
+            }
+    
+            for (let index_colone = 0; index_colone < nombre_colone; index_colone++) {
                 let char = ligne[index_colone];
-
+    
                 switch (char) {
                     case " ":
                         continue;
                     case "/":
                         this.AjoutRue(index_colone, index_ligne, Direction.NORD_EST);
-
                         break;
                     case "\\":
                         this.AjoutRue(index_colone, index_ligne, Direction.SUD_EST);
-
                         break;
                     case "|":
                         this.AjoutRue(index_colone, index_ligne, Direction.NORD);
-
                         break;
                     case "-":
                         this.AjoutRue(index_colone, index_ligne, Direction.EST);
@@ -320,14 +332,11 @@ export class Map {
                         this.AjoutCroisement(index_colone, index_ligne);
                         break;
                     default:
-                        print("Unable to read char");
+                        console.error("Caractère non reconnu:", char);
                         break;
                 }
-
             }
-
         }
-
     }
 }
 

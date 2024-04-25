@@ -76,9 +76,10 @@ const button_solve = document.getElementById("solve");
 
 var input_field_map_size_x = document.getElementById("taille_x");
 var input_field_map_size_y = document.getElementById("taille_y");
+var input_field_map_density = document.getElementById("density");
 
 button_generate_new_map.addEventListener('click', () => {
-    Request_New_Map(input_field_map_size_x.value, input_field_map_size_y.value);
+    Request_New_Map(input_field_map_size_x.value, input_field_map_size_y.value, 1 - input_field_map_density.value);
 });
 
 button_solve.addEventListener('click', () =>
@@ -89,9 +90,9 @@ button_solve.addEventListener('click', () =>
 
 ////Socket io 
 
-function Request_New_Map(size_x, size_y)
+function Request_New_Map(size_x, size_y, density)
 {
-    socket.emit('request_new_map', size_x, size_y);
+    socket.emit('request_new_map', size_x, size_y, density);
 }
 
 

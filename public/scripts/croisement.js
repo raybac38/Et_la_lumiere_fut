@@ -30,7 +30,7 @@ export class Croisement {
 
         let material = new THREE.MeshStandardMaterial({ color: 0xffffff });
         let mesh = new THREE.Mesh(geometry, material);
-        mesh.scale.set((1 / 4), 1, (1 / 4));
+        mesh.scale.set((1 / 3), 1, (1 / 3));
 
         this.name = 'c:' + this.position_x + ':' + this.position_y;
 

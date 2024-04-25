@@ -23,7 +23,7 @@ function HandleConnexion(socket) {
     socket.on('request_new_map', (taille_x, taille_y, densite = 0.2, enable_preverification = false) => {
         console.log("Requette d'une nouvelle carte");
 
-        RunPierroGenerator(taille_y, taille_x, densite, socketId)
+        RunPierroGenerator(taille_x, taille_y, densite, socketId)
             .then((data) => {
                 console.log("Data READED");
                 console.log(data);

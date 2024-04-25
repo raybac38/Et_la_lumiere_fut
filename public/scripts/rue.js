@@ -53,7 +53,7 @@ export class Rue {
         let mesh = new THREE.Mesh(geometry, material);
 
 
-        mesh.scale.set(1/4, 1, 1/4);
+        mesh.scale.set(1/3, 1, 1/3);
 
         if(this.direction == Direction.EST || this.direction == Direction.SUD_EST)
         {
