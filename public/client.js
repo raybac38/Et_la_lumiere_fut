@@ -4,7 +4,6 @@ import * as TERRAIN from './scripts/terrain.js';
 
 import * as MAP from './scripts/map.js';
 
-
 // Connexion au serveur via Socket.IO
 const socket = io();
 
@@ -12,9 +11,9 @@ const socket = io();
 var container = document.getElementById("Scene");
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 60, container.clientWidth / container.clientHeight,0.1, 1000);
+const camera = new THREE.PerspectiveCamera( 60, container.clientWidth / container.clientHeight ,0.1, 1000);
 
-const renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer();
 renderer.setSize( container.clientWidth, container.clientHeight );
 container.appendChild(renderer.domElement);
 
@@ -57,7 +56,7 @@ socket.on('message', (message) => {
 
 /// Gestion dynamique de la fenetre
 
-window.addEventListener( 'resize', onWindowResize, false );
+window.addEventListener('resize', onWindowResize);
 
 function onWindowResize(){
 
@@ -73,9 +72,7 @@ function onWindowResize(){
 
 
 const button_generate_new_map = document.getElementById("new_map");
-const drop_box_buttons_prefab = document.getElementsByClassName("prefab_map");
 const button_solve = document.getElementById("solve");
-const drop_box_value = document.getElementById("maps");
 
 var input_field_map_size_x = document.getElementById("taille_x");
 var input_field_map_size_y = document.getElementById("taille_y");
@@ -89,11 +86,6 @@ button_solve.addEventListener('click', () =>
     Request_Solve();
 });
 
-for (let i = 0; i < drop_box_buttons_prefab.length; i++) {
-    drop_box_buttons_prefab[i].addEventListener('click', () => {
-        Request_Prefab_Map(drop_box_value.options[drop_box_value.selectedIndex].text);
-    });
-}
 
 ////Socket io 
 
@@ -102,42 +94,21 @@ function Request_New_Map(size_x, size_y)
     socket.emit('request_new_map', size_x, size_y);
 }
 
-function Request_Prefab_Map(numero)
-{
-    socket.emit('request_prefab_map', numero)
-    console.log('request prefab map');
-}
 
 function Request_Solve()
 {
     console.log('request solve');
-    
 }
 
+const map = new MAP.Map();
 
 socket.on('map_data', (data) => 
 {
-    console.log('lecture de la carte de cours');
-
-
-
-
-
+    console.log('lecture de la carte de cours', data);
+    map.LectureMap(data);
 
 });
 
-
-/// Partie de teste 
-
-let map = new MAP.Map(3,3);
-
-
-map.teste_map();
-
-console.log(map);
-
-
-/// Affichage
 
 function animate() {
 	requestAnimationFrame( animate );
@@ -147,6 +118,8 @@ function animate() {
 }
 
 animate();
+
+
 
 
 //// exportation

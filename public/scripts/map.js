@@ -15,13 +15,17 @@ import { Lumiere, Lampadaire } from './lumiere.js';
 
 export class Map {
 
-    constructor(size_x, size_y) {
-        this.size_x = size_x * 2 + 1;
-        this.size_y = size_y * 2 + 1;
-        camera.position.set(this.size_x / 2, 1 + (size_x + size_y), this.size_y /2);
-        this.grille = this.CreeTableauNull(this.size_x, this.size_y);
+    constructor(size_x = 0, size_y = 0) {
+        this.Initialisaion(size_x, size_y);
     }
 
+    Initialisaion(taille_x, taille_y) {
+        this.size_x = taille_x;
+        this.size_y = taille_y;
+        camera.position.set(this.size_x / 2, this.size_x, this.size_y / 2);
+        this.grille = this.CreeTableauNull(this.size_x, this.size_y);
+    }
+    
     CreeTableauNull(size_x, size_y) {
         let tableau = new Array(size_x);
         for (let index_x = 0; index_x < size_x; index_x++) {
@@ -244,47 +248,90 @@ export class Map {
 
     }
 
+    GetNombreLigne() {
+        return this.size_y;
+    }
 
-    ///// Programme de teste
-
-
-    teste_map() {
-
-
-
-        this.AjoutCroisement(1, 1);
-        this.AjoutCroisement(1, 3);
-        this.AjoutCroisement(3, 1);
-        this.AjoutCroisement(5, 1);
-
-        this.AjoutRue(1, 0, Direction.NORD);
-        this.AjoutRue(1, 2, Direction.NORD);
-
-        this.AjoutRue(2, 2, Direction.NORD_EST);
-
-        this.AjoutRue(4, 1, Direction.EST);
-        this.AjoutRue(6, 1, Direction.EST);
-
-        this.AjoutRue(5, 0, Direction.NORD);
-
-        console.log(this.Verification());
-
-        let premier_lampadaire = new Lampadaire(0, Couleurs.BLEU);
-        let second_lampadaire = new Lampadaire(1, Couleurs.BLEU);
-
-        this.AjoutLampadaire(1, 3, premier_lampadaire)
-        this.AjoutLampadaire(5, 1, second_lampadaire);
-
-        console.log(this.Verification());
-
-        this.SupprimeLampadaire(premier_lampadaire, 1, 3);
-
-        console.log(this.Verification());
+    GetNombreColone() {
+        return this.size_x;
+    }
 
 
-        this.AffichageConsole();
+    SupprimerMap() {
+        let nombre_ligne = this.GetNombreLigne();
+        let nombre_colone = this.GetNombreColone();
+
+        for (let index_x = 0; index_x < nombre_colone; index_x++) {
+
+            for (let index_y = 0; index_y < nombre_ligne; index_y++) {
+
+                if (this.grille[index_x][index_y] !== null) {
+                    this.grille[index_x][index_y].SupprimerMesh();
+                }
+            }
+
+        }
+    }
+
+
+    LectureMap(raw_data) {
+
+        console.log(raw_data);
+        if(this.grille !== undefined) { 
+
+            this.SupprimerMap();
+        }
+
+        let nombre_colone;
+        let nombre_ligne;
+
+        let data = raw_data.split('\n');
+        nombre_colone = parseInt(data[0]);
+        nombre_ligne = parseInt(data[1]);
+
+        this.Initialisaion(nombre_colone + 2, nombre_ligne +2 );
+
+        for (let index_ligne = 2; index_ligne < nombre_ligne + 2; index_ligne++) {
+
+            let ligne = data[index_ligne];
+            for (let index_colone = 0; index_colone < nombre_colone + 2; index_colone++) {
+
+                let char = ligne[index_colone];
+
+                switch (char) {
+                    case " ":
+                        continue;
+                    case "/":
+                        this.AjoutRue(index_colone, index_ligne, Direction.NORD_EST);
+
+                        break;
+                    case "\\":
+                        this.AjoutRue(index_colone, index_ligne, Direction.SUD_EST);
+
+                        break;
+                    case "|":
+                        this.AjoutRue(index_colone, index_ligne, Direction.NORD);
+
+                        break;
+                    case "-":
+                        this.AjoutRue(index_colone, index_ligne, Direction.EST);
+                        break;
+                    case "#":
+                        this.AjoutCroisement(index_colone, index_ligne);
+                        break;
+                    default:
+                        print("Unable to read char");
+                        break;
+                }
+
+            }
+
+        }
+
     }
 }
+
+
 
 //// Faire une fonction pour lire le format JSON d'envoie 
 

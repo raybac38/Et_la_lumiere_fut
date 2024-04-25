@@ -30,7 +30,7 @@ export class Croisement {
 
         let material = new THREE.MeshStandardMaterial({ color: 0xffffff });
         let mesh = new THREE.Mesh(geometry, material);
-        mesh.scale.set(1 / 4, 1, 1 / 4);
+        mesh.scale.set((1 / 4), 1, (1 / 4));
 
         this.name = 'c:' + this.position_x + ':' + this.position_y;
 
@@ -40,6 +40,11 @@ export class Croisement {
 
         scene.add(mesh);
         mesh.position.set(this.position_x, 0, this.position_y);
+    }
+
+    SupprimerMesh()
+    {
+        scene.remove(this.mesh);
     }
 
 

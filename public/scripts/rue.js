@@ -16,7 +16,6 @@ export class Rue {
         this.material = null;
 
         this.GenerationMesh();
-
     }
 
     GenerationMesh()
@@ -69,6 +68,11 @@ export class Rue {
 
         scene.add(mesh);
         mesh.position.set(this.position_x, 0, this.position_y);
+    }
+
+    SupprimerMesh()
+    {
+        scene.remove(this.mesh);
     }
 
 

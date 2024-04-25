@@ -6,11 +6,13 @@
 
 /// Chargement de la bibliotech child process
 
+
 const { exec } = require('child_process');
 
 const { NeutralToneMapping } = require('three');
 
 const fs = require('fs').promises;
+
 
 function HandleConnexion(socket) {
     let socketId = socket.id;
@@ -21,31 +23,16 @@ function HandleConnexion(socket) {
     socket.on('request_new_map', (taille_x, taille_y, densite = 0.2, enable_preverification = false) => {
         console.log("Requette d'une nouvelle carte");
 
-        RunPierroGenerator(taille_x, taille_y, densite, socketId)
+        RunPierroGenerator(taille_y, taille_x, densite, socketId)
             .then((data) => {
                 console.log("Data READED");
                 console.log(data);
+                socket.emit('map_data', (data));
             })
             .catch((error) => {
                 console.log("Error");
             })
     });
-
-
-    socket.on('request_prefab_map', (numero) => {
-        if (0 < numero && numero < 6) {
-            let name = './jeu_de_teste/teste_' + numero + '.txt';
-
-            let data = OpenMapDataFile(name);
-            if (data === false) console.log("Unable to open file");
-            else {
-                socket.emit('map_data', (data));
-            }
-        }
-        else {
-            console.log("Unable to find prefab map");
-        }
-    })
 
 
     socket.on('disconnect', () => {
@@ -75,20 +62,5 @@ function RunPierroGenerator(taille_x, taille_y, densite, id) {
         });
     });
 }
-
-
-function OpenMapDataFile(name)
-{
-    fs.readFile(name, 'utf8', (err, data) => {
-        if (err) {
-          console.error(err);
-          return false;
-        }
-
-        console.log(data);
-        return data;
-      });
-}
-
 
 module.exports = { HandleConnexion };
