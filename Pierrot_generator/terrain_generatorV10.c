@@ -22,46 +22,19 @@ void imprimer_tableau(Terrain tablo, int x, int y) {
     }
 }
 
-#include <stdbool.h>
-#include <stdlib.h>
-
-#include <stdbool.h>
-#include <stdlib.h>
-#include <limits.h>
-
-void init_seed() {
-    static unsigned int seed_initialized = 0;
-    if (seed_initialized == 0) {
-        seed_initialized = 1;
-        srand((unsigned int)time(NULL));
-    }
-}
-
-int aleatoire_rue(double proba) {
-    // Initialisation des variables statiques
-    init_seed();
-
-    // Algorithme simple de génération de nombres pseudo-aléatoires
-    unsigned int m_w = rand();
-    unsigned int m_z = 987654321;
-
-    m_z = 36969 * (m_z & 65535) + (m_z >> 16);
-    m_w = 18000 * (m_w & 65535) + (m_w >> 16);
-
-    unsigned int rand_result = (m_z << 16) + m_w;
-
-    // Normalisation du résultat entre 0 et 1
-    double random_value = (double) rand_result / UINT_MAX;
-
-    // Comparaison avec la probabilité donnée
-    if (random_value < proba)
+int aleatoire_rue(int proba) {
+   proba = proba % 10;
+   int i;
+   for(i=0; i<= proba ;i++) {
+    if( rand() % 9 == 0 ) {
         return 0;
-    else
-        return 1;
+    }
+   }
+   return 1;
 }
 
 
-void generer_terrain(Terrain *tablo, double densite, double proba) {
+void generer_terrain(Terrain *tablo, double densite, int proba) {
     int x0, y0;
     
 
@@ -127,7 +100,7 @@ void generer_terrain(Terrain *tablo, double densite, double proba) {
     }
 }
 
-void verif_tabl(Terrain *tablo, double densite, double proba) {
+void verif_tabl(Terrain *tablo, double densite, int  proba) {
     int x0, y0;
      for (x0 = 0; x0 < tablo->size_max_x; x0++) {
         for (y0 = 0; y0 < tablo->size_max_y; y0++) {
@@ -158,14 +131,14 @@ void verif_tabl(Terrain *tablo, double densite, double proba) {
 
 int main(int argc, char *argv[]) {
     if (argc != 5) {
-        printf("Usage: %s <taille_x> <taille_y> <densite> <proba_apparition de route>\n", argv[0]);
+        printf("Usage: %s <taille_x> <taille_y> <densite> <proba apparition de route>\n", argv[0]);
         return 1;
     }
 
     int x = atoi(argv[1]); // Convertit le premier argument en entier
     int y = atoi(argv[2]); // Convertit le deuxième argument en entier
     double densite = atof(argv[3]); // Convertit le troisième argument en double
-    double proba = atof(argv[3]);
+    int proba = atof(argv[3]);
 
     Terrain tablo;
 

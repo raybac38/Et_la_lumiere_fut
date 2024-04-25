@@ -8,3 +8,5 @@ V5 generation avec demande de densité et supression des caracteres inutiles
 V6 ajout alternance des \ et /
 V7 ajout fun verif_tabl : suppression des # seuls et #-#-#-# (avec moins de deux routes qui connecte le bloc) car cela renvoit une erreur logique
 V8 programme avec densite longueur largueur en argument
+V9 cat directement le terrain
+V10 ajoute un aléatoire sur les rues aussi en 4 position des arguments
