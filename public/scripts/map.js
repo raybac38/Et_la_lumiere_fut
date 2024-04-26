@@ -20,6 +20,11 @@ export class Map {
         this.Initialisaion(size_x, size_y);
     }
 
+    IsMapEmpty()
+    {
+        return this.size_x === 0 && this.size_y === 0;
+    }
+
     Initialisaion(taille_x, taille_y) {
         this.size_x = taille_x;
         this.size_y = taille_y;

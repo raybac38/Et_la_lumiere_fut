@@ -16,7 +16,7 @@ void imprimer_tableau(Terrain tablo, int x, int y) {
 
     for (x0 = 0; x0 < x; x0++) {
         for (y0 = 0; y0 < y; y0++) {
-            printf("%c ", tablo.tab[x0][y0]);
+            printf("%c", tablo.tab[x0][y0]);
         }
         printf("\n");
     }
@@ -33,37 +33,48 @@ int aleatoire_rue(int proba) {
    return 1;
 }
 
+void initialiser_terrain(Terrain *tablo) {
+    for (int x = 0; x < tablo->size_max_x; x++) {
+        for (int y = 0; y < tablo->size_max_y; y++) {
+            tablo->tab[x][y] = ' ';
+        }
+    }
+}
+
+void ajouter_caractere(Terrain *tablo, int x, int y, char caractere) {
+    if (x >= 0 && x < tablo->size_max_x && y >= 0 && y < tablo->size_max_y) {
+        tablo->tab[x][y] = caractere;
+    }
+}
 
 void generer_terrain(Terrain *tablo, double densite, int proba) {
-    int x0, y0;
-    
+    initialiser_terrain(tablo);
+    srand(time(NULL));
 
-    // Initialisation avec des caractères par défaut
-    for (x0 = 0; x0 < MAX_SIZE; x0++) {
-        for (y0 = 0; y0 < MAX_SIZE; y0++) {
-            tablo->tab[x0][y0] = ' ';
+    for (int x = 1; x < tablo->size_max_x - 1; x += 2) {
+        for (int y = 1; y < tablo->size_max_y - 1; y += 2) {
+            ajouter_caractere(tablo, x, y, '#');
         }
     }
 
-    for (x0 = 0; x0 < tablo->size_max_x; x0++) {
-        for (y0 = 0; y0 < tablo->size_max_y; y0++) {
-            if ((x0 % 2) == 1 && (y0 % 2) == 1) {
-                tablo->tab[x0][y0] = '#';
-            } else if (((x0 % 2) == 1 && (y0 % 2) == 0) && aleatoire_rue(proba) == 0) {
-                tablo->tab[x0][y0] = '-';
-            } else if (((x0 % 2) == 0 && (y0 % 2) == 1)&& aleatoire_rue(proba) == 0) {
-                tablo->tab[x0][y0] = '|';
-            } else if (((x0 % 2) == 0 && (y0 % 2) == 0 && x0 != tablo->size_max_x - 1 && y0 != tablo->size_max_y - 1) && aleatoire_rue(proba) == 0) {
-                 tablo->tab[x0][y0] = '\\'; 
-                }
-            
+    for (int x = 1; x < tablo->size_max_x - 1; x += 2) {
+        for (int y = 0; y < tablo->size_max_y; y += 2) {
+            if (aleatoire_rue(proba)) {
+                ajouter_caractere(tablo, x, y, '-');
+            }
+        }
+    }
+
+    for (int x = 0; x < tablo->size_max_x; x += 2) {
+        for (int y = 1; y < tablo->size_max_y - 1; y += 2) {
+            if (aleatoire_rue(proba)) {
+                ajouter_caractere(tablo, x, y, '|');
+            }
         }
     }
 
     int total_intersections = (tablo->size_max_x / 2) * (tablo->size_max_y / 2);
     int nb_intersections_hashtag = (int)(densite * total_intersections);
-
-    srand(time(NULL));
 
     for (int i = 0; i < nb_intersections_hashtag; i++) {
         int x, y;
@@ -72,29 +83,24 @@ void generer_terrain(Terrain *tablo, double densite, int proba) {
             y = rand() % (tablo->size_max_y / 2) * 2 + 1;
         } while (tablo->tab[x][y] != '#');
         
-        tablo->tab[x][y] = ' ';
+        ajouter_caractere(tablo, x, y, ' ');
     }
 
-    // Supprimer les caractères qui ne sont pas entre deux '#' ou entre un '#' et le bord du terrain
-    for (x0 = 0; x0 < tablo->size_max_x; x0++) {
-        for (y0 = 0; y0 < tablo->size_max_y; y0++) {
-            if (tablo->tab[x0][y0] == '-' || tablo->tab[x0][y0] == '|' || tablo->tab[x0][y0] == '\\' || tablo->tab[x0][y0] == '/') {
-                // Vérifier si le caractère est entre deux '#' dans la même rangée
-                if ((y0 - 1 >= 0 && tablo->tab[x0][y0 - 1] == '#') && (y0 + 1 < tablo->size_max_y && tablo->tab[x0][y0 + 1] == '#')) {
+    for (int x = 0; x < tablo->size_max_x; x++) {
+        for (int y = 0; y < tablo->size_max_y; y++) {
+            if (tablo->tab[x][y] == '-' || tablo->tab[x][y] == '|' || tablo->tab[x][y] == '\\' || tablo->tab[x][y] == '/') {
+                if ((y - 1 >= 0 && tablo->tab[x][y - 1] == '#') && (y + 1 < tablo->size_max_y && tablo->tab[x][y + 1] == '#')) {
                     continue;
                 }
-                // Vérifier si le caractère est entre deux '#' dans la même colonne
-                if ((x0 - 1 >= 0 && tablo->tab[x0 - 1][y0] == '#') && (x0 + 1 < tablo->size_max_x && tablo->tab[x0 + 1][y0] == '#')) {
+                if ((x - 1 >= 0 && tablo->tab[x - 1][y] == '#') && (x + 1 < tablo->size_max_x && tablo->tab[x + 1][y] == '#')) {
                     continue;
                 }
-                if ((x0 - 1 >= 0 && y0 - 1 >= 0) && tablo->tab[x0-1][y0-1] == '#') {
-                    if ((x0 + 1 < tablo->size_max_x) && (y0+1 < tablo->size_max_y) && tablo->tab[x0+1][y0+1] == '#') {
+                if ((x - 1 >= 0 && y - 1 >= 0) && tablo->tab[x-1][y-1] == '#') {
+                    if ((x + 1 < tablo->size_max_x) && (y+1 < tablo->size_max_y) && tablo->tab[x+1][y+1] == '#') {
                         continue;
                     }
                 }
-  
-                // Si aucune des conditions ci-dessus n'est remplie, supprimer le caractère
-                tablo->tab[x0][y0] = ' ';
+                tablo->tab[x][y] = ' ';
             }
         }
     }
@@ -135,15 +141,15 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int x = atoi(argv[1]); // Convertit le premier argument en entier
-    int y = atoi(argv[2]); // Convertit le deuxième argument en entier
+    int x = atoi(argv[1]) * 2 + 1; // Convertit le premier argument en entier
+    int y = atoi(argv[2]) * 2 + 1; // Convertit le deuxième argument en entier
     double densite = atof(argv[3]); // Convertit le troisième argument en double
-    int proba = atof(argv[3]);
+    int proba = atof(argv[4]);
 
     Terrain tablo;
 
-    printf( "%d\n", x);
     printf( "%d\n", y);
+    printf( "%d\n", x);
     tablo.size_max_x = x;
     tablo.size_max_y = y;
 

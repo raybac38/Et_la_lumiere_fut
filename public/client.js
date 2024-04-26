@@ -21,7 +21,7 @@ container.appendChild(renderer.domElement);
 
 /// Initialisaion de la lumièere
 
-const ambiantlight = new THREE.AmbientLight(0xffffff, 0.5);
+const ambiantlight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambiantlight);
 
 
@@ -31,7 +31,7 @@ camera.rotation.x = -90 * (Math.PI / 180);
 
 /// rendu
 
-scene.background = new THREE.Color(0x2e4482);
+scene.background = new THREE.Color(0xeee8d5);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 
@@ -55,4 +55,4 @@ MAP.MapInit();
 
 //// exportation
 
-export {scene, camera, container} 
+export {scene, camera, renderer, container} 

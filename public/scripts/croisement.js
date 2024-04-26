@@ -123,25 +123,7 @@ export class Croisement {
     }
 
     Verification() {
-
-        if (this.lumieres.length == 0) {
-            return this.lampadaire != null;
-        }
-        else {
-            for (let lumiere_ref = 0; lumiere_ref < this.lumieres.length; lumiere_ref++) {
-
-                let couleur_ref = this.lumieres[lumiere_ref].couleur;
-
-                for (let index_lumiere = lumiere_ref + 1; index_lumiere < this.lumieres.length; index_lumiere++) {
-
-                    if (this.lumieres[index_lumiere].couleur == couleur_ref) return false;
-
-                }
-
-            }
-            return true;
-        }
-
+        return ! (this.CheckLampadaire() && this.lumieres.length != 1)
     }
 
 

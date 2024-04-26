@@ -22,6 +22,6 @@ export const CouleurHexa = {
     jaune: 0xFFFF00,
     blanc: 0xFFFFFF,
     noir: 0x000000,
-    gris: 0x808080
+    gris: 0xA0A0A0
 }
 
