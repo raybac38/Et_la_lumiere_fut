@@ -1,5 +1,7 @@
 import * as THREE from '/three.js';
 
+import { CouleurHexa , Couleurs } from './constants.js'
+
 import { scene } from '../client.js';
 
 
@@ -19,6 +21,7 @@ export class Croisement {
         this.geometry = null;
 
         this.GenerationMesh();
+        this.ColorUpdate()
     }
 
     /// Fonction en charge de la génération et de l'ajout dans la scene du croisement
@@ -33,6 +36,7 @@ export class Croisement {
         mesh.scale.set((1 / 3), 1, (1 / 3));
 
         this.name = 'c:' + this.position_x + ':' + this.position_y;
+        mesh.name = 'c:' + this.position_x + ':' + this.position_y;
 
         this.geometry = geometry;
         this.material = material;
@@ -47,35 +51,76 @@ export class Croisement {
         scene.remove(this.mesh);
     }
 
+    /*
+    True = lampadaire présent
+    False = absent de lampadaire
+    */
+    CheckLampadaire()
+    {
+        return this.lampadaire != null;
+    }
 
-    AjoutLampadaire(lampadaire) {
+    GetLampadaire()
+    {
+        return this.lampadaire;
+    }
+
+    AjouterLampadaire(lampadaire) {
         if (this.lampadaire == null) {
             this.lampadaire = lampadaire;
             return true;
         }
         else {
+            console.log("Lampadaire déjà éxistant");
             return false;
         }
     }
 
-    AjoutLumiere(lumiere) {
-        this.lumieres.push(lumiere);
-    }
-
-    SupprimeLumiere(lumiere) {
-        let indice = this.lumieres.indexOf(lumiere);
-        if (indice != -1) {
-            this.lumieres.splice(indice, 1);
+    SupprimerLampadaire() {
+        if (this.lampadaire !== null) {
+            this.lampadaire = null;
             return true;
+        } else {
+            console.log("Aucun lampadaire à supprimer");
+            return false;
         }
-        return false;
+    }
+    
+
+    AjouterLumiere(lumiere) {
+        this.lumieres.push(lumiere);
+        this.ColorUpdate();
     }
 
-    SupprimeLampadaire(lampadaire) {
-        this.lampadaire = null;
+    ColorUpdate()
+    {
+
+        console.log("Croisement Color update", this.name);
+        let taille =  this.lumieres.length;
+        if(taille == 0)
+        {
+            this.material.color.set(CouleurHexa.gris)
+        }
+        else
+        {
+            let couleur = this.lumieres[taille - 1].GetColor();
+            this.material.color.set(CouleurHexa[couleur]);
+            console.log("nouvelle couleur ", CouleurHexa[couleur]);
+        }
     }
 
+    SupprimerLumiere(lumiere) {
 
+        let ref_id = lumiere.GetId();
+        for (let indice = 0; indice < this.lumieres.length; indice++) {
+            if(this.lumieres[indice].GetId() === ref_id)
+            {
+                this.lumieres.splice(indice, 1);
+                this.ColorUpdate();
+                break;
+            }
+        }
+    }
 
     Verification() {
 
