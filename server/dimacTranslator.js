@@ -14,9 +14,9 @@ class Dimac {
     }
     AjouterLitteral(valeur)
     {
-        if(valeur > this.nb_litteraux)
+        if(Math.abs(valeur) > this.nb_litteraux)
         {
-            this.nb_litteraux = valeur;
+            this.nb_litteraux = Math.abs(valeur);
         }
     }
 
@@ -54,6 +54,7 @@ class Dimac {
     }
 
     OutputDIMACS(fileName) {
+
 
         console.log("Debut Output DIMACS");
         console.log(this.clauses);

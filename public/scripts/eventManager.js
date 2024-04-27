@@ -49,7 +49,7 @@ function InitEvent() {
     });
 
     button_solve.addEventListener('click', () => {
-        SocketServices.Request_Solve();
+        
     });
 
     button_verification.addEventListener('click', () => {

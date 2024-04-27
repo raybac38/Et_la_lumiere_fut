@@ -12,10 +12,11 @@ function Request_New_Map(size_x, size_y, density)
 {
     socket.emit('request_new_map', size_x, size_y, density);
 }
-function Request_Solve()
+
+socket.on('solve', (data)=>
 {
-    console.log('request solve');
-}
+    console.log(data);
+})
 
 
-export {Request_New_Map, Request_Solve}
+export {Request_New_Map}

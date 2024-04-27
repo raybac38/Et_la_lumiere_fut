@@ -67,14 +67,11 @@ class Map {
 
         if (data.length > 2) {
             console.log("Initializing map with size...");
-            this.Initialization(parseInt(data[0]), parseInt(data[1]));
+            this.Initialization(parseInt(data[1]), parseInt(data[0]));
             console.log(data);
             data.splice(0, 2);
 
             console.log(data);
-
-            
-            console.log("Dja");
             
             for (let y = 0; y < this.size_y; y++) {
                 for (let x = 0; x < this.size_x; x++) {

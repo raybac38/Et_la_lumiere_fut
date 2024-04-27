@@ -9,7 +9,7 @@
 
 const { exec } = require('child_process');
 
-const fs = require('fs').promises;
+const fs = require('fs');
 
 
 var DIMAC = require('./dimacTranslator');
@@ -74,24 +74,21 @@ function RunPierroGenerator(taille_x, taille_y, densite_croisement, id) {
         });
     });
 }
-
-//// Teste de map.js
-
-
-///Execution de LIMMAT
-function RunLimat(id) {
-    let commande = "./limmat-1.3/limmat ./" + id;
+function RunLimat(fileName) {
+    console.log("Interogation du sat solver");
+    let commande = "./sat-solver/resol " + fileName;
 
     return new Promise((resolve, reject) => {
         exec(commande, (error, stdout, stderr) => {
             if (error) {
                 console.log('Error : ', error.message);
+                exec("./rm " + fileName);
                 reject(error);
                 return;
             }
             else if (stderr) {
                 console.log('Error : ', stderr);
-                exec("./rm " + id);
+                exec("./rm " + fileName);
                 reject(new Error(stderr));
                 return;
             }
@@ -99,21 +96,29 @@ function RunLimat(id) {
         });
     });
 }
+//// Teste de map.js
 
-function Recherche_Solution(raw_data, socket, id)
-{
+function Recherche_Solution(raw_data, socket, id) {
+    let filename = "./" + id + ".cnf";
     map.LoadMap(raw_data);
     map.CreateDimac(dimac);
-    dimac.OutputDIMACS(id);
-    RunLimat(id)
-    .then((data) => {
-        console.log("Data READED");
-        console.log(data);
-        socket.emit('solve', (data));
-    })
-    .catch((error) => {
-        console.log("Error");
-    })
+    dimac.OutputDIMACS(filename);
+    
+    setTimeout(() => {
+        RunLimat(filename)
+            .then((data) => {
+                console.log("Data READED");
+                console.log(data);
+                socket.emit('solve', (data));
+            })
+            .catch((error) => {
+                console.log("Error");
+            });
+        
+        dimac.ClearClause();
+    }, 500);
+    
+    // Exécution de limmat
 }
 
 

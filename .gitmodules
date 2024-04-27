@@ -1,0 +1,3 @@
+[submodule "sat-solver"]
+	path = sat-solver
+	url = https://gitlab.aliens-lyon.fr/ablot/sat-solver.git
