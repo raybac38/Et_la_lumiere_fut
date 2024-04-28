@@ -11,8 +11,8 @@ import { CastRaycast} from './raycaster.js'
 var container = document.getElementById("Scene");
 
 
-const message_reussite = "Bravo !\n Vous avez réussi à éclairer toutes les rues du village sans qu'aucun lampadaire ne se croise, et en respectant les exigences strictes de la brigade du bon goût. La lumière rayonne harmonieusement dans notre charmant village !";
-const message_echec = "Hmm, quelque chose ne va pas. \n Il semblerait qu'il y ait des erreurs dans votre disposition des lampadaires. Assurez-vous que chaque rue est correctement éclairée et qu'aucun lampadaire ne se croise. La brigade du bon goût n'approuverait pas cette configuration !";
+const message_reussite = "Bravo !<br> Vous avez réussi à éclairer toutes les rues du village sans qu'aucun lampadaire ne se croise, et en respectant les exigences strictes de la brigade du bon goût.<br> La lumière rayonne harmonieusement dans notre charmant village !";
+const message_echec = "Hmm, quelque chose ne va pas. <br> Il semblerait qu'il y ait des erreurs dans votre disposition des lampadaires.<br> Assurez-vous que chaque rue est correctement éclairée et qu'aucun lampadaire ne se croise.<br> La brigade du bon goût n'approuverait pas cette configuration !";
 const message_humour = "La vérification d'une carte non existante n'est déterministe que dans l'imaginaire du programmeur."
 
 
@@ -45,11 +45,12 @@ function InitEvent() {
 
 
     button_generate_new_map.addEventListener('click', () => {
+        map.RemoveSolution();
         SocketServices.Request_New_Map(input_field_map_size_x.value, input_field_map_size_y.value, 1 - input_field_map_density.value);
     });
 
     button_solve.addEventListener('click', () => {
-        
+        map.ExecutionSolution();
     });
 
     button_verification.addEventListener('click', () => {

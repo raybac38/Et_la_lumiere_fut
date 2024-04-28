@@ -15,7 +15,7 @@ var container = document.getElementById("Scene");
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 60, container.clientWidth / container.clientHeight ,0.1, 1000);
 
-var renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer( { antialias: true });
 renderer.setSize( container.clientWidth, container.clientHeight );
 container.appendChild(renderer.domElement);
 

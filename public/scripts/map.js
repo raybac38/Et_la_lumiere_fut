@@ -3,6 +3,8 @@
     Fichier Javascript cerveau logique du jeu
 
 */
+import * as THREE from '/three.js';
+
 import { camera } from '../client.js';
 
 import { Couleurs, Direction } from './constants.js';
@@ -13,15 +15,19 @@ import { Croisement } from "./croisement.js";
 
 import { Lumiere, Lampadaire } from './lumiere.js';
 
+import { GetIdNumber } from './raycaster.js';
+
+import * as CONSTANTE from './constants.js';
+
 
 export class Map {
 
     constructor(size_x = 0, size_y = 0) {
         this.Initialisaion(size_x, size_y);
+        this.solution = null;
     }
 
-    IsMapEmpty()
-    {
+    IsMapEmpty() {
         return this.size_x === 0 && this.size_y === 0;
     }
 
@@ -177,14 +183,12 @@ export class Map {
     True : Lampadaire existant
     False: Absence de lampadaire
     */
-    CheckLampadaire(x,y)
-    {
+    CheckLampadaire(x, y) {
         return this.grille[x][y].CheckLampadaire();
     }
 
     /// Renvoie le croisement
-    GetCroisement(x, y)
-    {
+    GetCroisement(x, y) {
         return this.grille[x][y];
     }
 
@@ -217,32 +221,32 @@ export class Map {
         console.log(lumiere);
 
         console.log("lumiere : ", lumiere);
-        
+
         const PropagationLumiere = (starting_x, starting_y, offsets, lumiere) => {
             for (const [offset_x, offset_y] of offsets) {
                 let x = parseInt(starting_x) + parseInt(offset_x);
                 let y = parseInt(starting_y) + parseInt(offset_y);
                 let direction_reference = this.OffsetToDirection(offset_x, offset_y);
-        
+
                 console.log("Avant le tour de boucle");
                 while (this.IsValidPosition(x, y, this) && this.IsNotStreetOrSameDirection(x, y, direction_reference, this)) {
-                    
+
                     this.grille[x][y].AjouterLumiere(lumiere);
                     [x, y] = this.MovePosition(x, y, offset_x, offset_y);
                 }
             }
         };
-        
+
         const offsets = [
             [0, 1], [1, 1], [1, 0], [1, -1],
             [0, -1], [-1, -1], [-1, 0], [-1, 1]
         ];
-        
+
         this.grille[x][y].AjouterLampadaire(lampadaire);
         this.grille[x][y].AjouterLumiere(lumiere);
-        
+
         PropagationLumiere(x, y, offsets, lumiere);
-        
+
     }
 
     IsValidPosition(x, y, map) {
@@ -258,12 +262,10 @@ export class Map {
     IsNotStreetOrSameDirection(x, y, direction_reference, map) {
         console.log(map, x, y);
         let cellule = map.grille[x][y];
-        if(cellule instanceof Croisement)
-        {
+        if (cellule instanceof Croisement) {
             return true;
         }
-        else if(cellule instanceof Rue)
-        {
+        else if (cellule instanceof Rue) {
             return cellule.direction === direction_reference;
         }
         return false;
@@ -301,32 +303,32 @@ export class Map {
         console.log(lumiere);
 
         console.log("lumiere : ", lumiere);
-        
+
         const PropagationLumiere = (starting_x, starting_y, offsets, lumiere) => {
             for (const [offset_x, offset_y] of offsets) {
                 let x = parseInt(starting_x) + parseInt(offset_x);
                 let y = parseInt(starting_y) + parseInt(offset_y);
                 let direction_reference = this.OffsetToDirection(offset_x, offset_y);
-        
+
                 console.log("Avant le tour de boucle");
                 while (this.IsValidPosition(x, y, this) && this.IsNotStreetOrSameDirection(x, y, direction_reference, this)) {
-                    
+
                     this.grille[x][y].SupprimerLumiere(lumiere);
                     [x, y] = this.MovePosition(x, y, offset_x, offset_y);
                 }
             }
         };
-        
+
         const offsets = [
             [0, 1], [1, 1], [1, 0], [1, -1],
             [0, -1], [-1, -1], [-1, 0], [-1, 1]
         ];
-        
+
         this.grille[x][y].SupprimerLampadaire(lampadaire);
         this.grille[x][y].SupprimerLumiere(lumiere);
-        
+
         PropagationLumiere(x, y, offsets, lumiere);
-        
+
     }
 
     GetNombreLigne() {
@@ -416,15 +418,76 @@ export class Map {
             }
         }
     }
+
+    SauvegardeSolution(solution) {
+        this.solution = solution;
+    }
+    RemoveSolution() {
+        this.solution = null;
+    }
+
+    ExecutionSolution() {
+        if (this.solution == null) {
+            return; // Pas de solution en sauvegard
+        }
+
+        let temporaire = this.solution.split("\n");
+
+        if (temporaire == "s UNSATISFIABLE") {
+            /// Aucune solution 
+            console.log("Pas de solution");
+            return;
+        }
+
+        /// Solution a montrer
+
+        let liste = temporaire[1];
+        let indice = 0;
+
+        for (let index_y = 0; index_y < this.GetNombreLigne(); index_y++) {
+
+            for (let index_x = 0; index_x < this.GetNombreColone(); index_x++) {
+
+                if (this.grille[index_x][index_y] instanceof Croisement) {
+                    let lampadaire = null;
+                    let croisement = this.GetCroisement(index_x, index_y);
+
+                    if (this.CheckLampadaire(index_x, index_y)) {
+                        lampadaire = croisement.GetLampadaire();
+                    }
+
+                    if (Math.sign(liste[indice]) == -1 && lampadaire != null) {
+                        this.SupprimeLampadaire(index_x, index_y, lampadaire);
+                    }
+                    else if (Math.sign(liste[indice]) == 1 && lampadaire == null) {
+                        lampadaire = new Lampadaire(CONSTANTE.Couleurs.BLANC, GetIdNumber());
+                        
+                        this.AjoutLampadaire(index_x, index_y, lampadaire);
+                    }
+                    indice++;
+
+                }
+
+            }
+
+        }
+
+
+
+
+    }
+
+
+
+
 }
 var map = null;
-function MapInit()
-{
+function MapInit() {
     map = new Map();
 }
 
 
-export { map , MapInit};
+export { map, MapInit };
 
 
 

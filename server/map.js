@@ -67,7 +67,7 @@ class Map {
 
         if (data.length > 2) {
             console.log("Initializing map with size...");
-            this.Initialization(parseInt(data[1]), parseInt(data[0]));
+            this.Initialization(parseInt(data[0]), parseInt(data[1]));
             console.log(data);
             data.splice(0, 2);
 
@@ -106,8 +106,8 @@ class Map {
 
     CreateDimac(Dimac) {
         console.log("Creating DIMAC...");
-        for (let x = 1; x < this.GetNumberOfColumns() - 1; x++) {
-            for (let y = 1; y < this.GetNumberOfRows() - 1; y++) {
+        for (let x = 0; x < this.GetNumberOfColumns(); x++) {
+            for (let y = 0; y < this.GetNumberOfRows(); y++) {
                 let clause = [];
                 let clause_dimac = [];
 
@@ -137,6 +137,8 @@ class Map {
 
                     }
                     Dimac.AjouterClause(clause_dimac);
+                    Dimac.AjouterLitteral(this.PositionToId(x, y ));
+
 
 
                 }

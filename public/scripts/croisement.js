@@ -18,7 +18,8 @@ export class Croisement {
 
         this.mesh = null;
         this.material = null;
-        this.geometry = null;
+        this.geometry_octo = null;
+        this.geometry_torus = null;
 
         this.GenerationMesh();
         this.ColorUpdate()
@@ -27,23 +28,53 @@ export class Croisement {
     /// Fonction en charge de la génération et de l'ajout dans la scene du croisement
     GenerationMesh() {
 
-        let geometry = new THREE.BufferGeometry();
-        geometry.setIndex(hexa_raw_data.triangles);
-        geometry.setAttribute('position', new THREE.BufferAttribute(hexa_raw_data.verticies, 3));
+        let geometry_octo = new THREE.BufferGeometry();
+        geometry_octo.setIndex(hexa_raw_data.triangles);
+        geometry_octo.setAttribute('position', new THREE.BufferAttribute(hexa_raw_data.verticies, 3));
+
+        this.geometry_torus = new THREE.TorusGeometry(2, 0.75, 4, 16);
 
         let material = new THREE.MeshStandardMaterial({ color: 0xffffff });
-        let mesh = new THREE.Mesh(geometry, material);
+        let mesh = new THREE.Mesh(geometry_octo, material);
         mesh.scale.set((1 / 3), 1, (1 / 3));
 
         this.name = 'c:' + this.position_x + ':' + this.position_y;
-        mesh.name = 'c:' + this.position_x + ':' + this.position_y;
+        mesh.name = this.name;
 
-        this.geometry = geometry;
+        this.geometry_octo = geometry_octo;
         this.material = material;
         this.mesh = mesh;
 
         scene.add(mesh);
         mesh.position.set(this.position_x, 0, this.position_y);
+    }
+
+
+    ChangeMesh(has_lampadaire)
+    {
+        scene.remove(this.mesh);
+
+        let mesh = null;
+        if(has_lampadaire)
+        {
+            mesh = new THREE.Mesh(this.geometry_torus, this.material);
+            mesh.rotation.x = Math.PI / 2;
+            mesh.scale.set((1 / 4), (1/4), (1/6));
+
+        }
+        else
+        {
+            mesh = new THREE.Mesh(this.geometry_octo, this.material);
+            mesh.rotation.x = 0;
+            mesh.scale.set((1 / 3), 1, (1 / 3));
+
+        }
+        this.mesh = mesh;
+        mesh.name = this.name;
+
+        scene.add(mesh);
+        mesh.position.set(this.position_x, 0, this.position_y);
+
     }
 
     SupprimerMesh()
@@ -68,6 +99,7 @@ export class Croisement {
     AjouterLampadaire(lampadaire) {
         if (this.lampadaire == null) {
             this.lampadaire = lampadaire;
+            this.ChangeMesh(true);
             return true;
         }
         else {
@@ -79,6 +111,7 @@ export class Croisement {
     SupprimerLampadaire() {
         if (this.lampadaire !== null) {
             this.lampadaire = null;
+            this.ChangeMesh(false);
             return true;
         } else {
             console.log("Aucun lampadaire à supprimer");
@@ -94,7 +127,6 @@ export class Croisement {
 
     ColorUpdate()
     {
-
         console.log("Croisement Color update", this.name);
         let taille =  this.lumieres.length;
         if(taille == 0)

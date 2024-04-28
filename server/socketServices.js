@@ -16,14 +16,13 @@ var DIMAC = require('./dimacTranslator');
 var MAP = require('./map');
 
 var dimac = new DIMAC.Dimac();
-var map = new MAP.Map(0,0);
+var map = new MAP.Map(0, 0);
 
 
 function HandleConnexion(socket) {
     let socketId = socket.id;
 
     console.log("Nouvelle connection : id ", socketId);
-
 
     socket.on('request_new_map', (taille_x, taille_y, densite_croisement = 0.2, enable_preverification = false) => {
         console.log("Requette d'une nouvelle carte");
@@ -34,7 +33,7 @@ function HandleConnexion(socket) {
                 console.log(data);
                 socket.emit('map_data', (data));
 
-                Recherche_Solution(data,socket, socketId);
+                Recherche_Solution(data, socket, socketId);
 
 
 
@@ -43,7 +42,7 @@ function HandleConnexion(socket) {
             .catch((error) => {
                 console.log("Error");
             })
-        
+
     });
 
 
@@ -51,7 +50,6 @@ function HandleConnexion(socket) {
         console.log("Deconnection : id", socketId);
     });
 }
-
 
 
 /// Executer le script C permettant la génération d'une carte
@@ -74,6 +72,7 @@ function RunPierroGenerator(taille_x, taille_y, densite_croisement, id) {
         });
     });
 }
+
 function RunLimat(fileName) {
     console.log("Interogation du sat solver");
     let commande = "./sat-solver/resol " + fileName;
@@ -95,29 +94,27 @@ function RunLimat(fileName) {
             resolve(stdout);
         });
     });
-}
-//// Teste de map.js
+};
 
 function Recherche_Solution(raw_data, socket, id) {
     let filename = "./" + id + ".cnf";
     map.LoadMap(raw_data);
     map.CreateDimac(dimac);
     dimac.OutputDIMACS(filename);
-    
-    setTimeout(() => {
-        RunLimat(filename)
-            .then((data) => {
-                console.log("Data READED");
-                console.log(data);
-                socket.emit('solve', (data));
-            })
-            .catch((error) => {
-                console.log("Error");
-            });
-        
-        dimac.ClearClause();
-    }, 500);
-    
+
+    RunLimat(filename)
+        .then((data) => {
+            console.log("Data READED");
+            console.log(data);
+            socket.emit('solve', (data));
+        })
+        .catch((error) => {
+            console.log("Error");
+        });
+
+    dimac.ClearClause();
+
+
     // Exécution de limmat
 }
 

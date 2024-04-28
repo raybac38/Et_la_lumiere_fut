@@ -2,27 +2,66 @@
     background-color: #fdf6e3;
     width: 15vw;
     height: 100vh;
-    margin: 0px;
-    padding: 0px;
-    float: inline-start;
+    padding: 20px;
+    position: fixed; 
+    top: 0; 
+    left: 10px; 
+    z-index: 1;
 }
 
 #Scene {
     background-color: #eee8d5;
-    margin: 0px;
-    padding: 0px;
-    width: 85vw;
+    margin-left: 15vw; /* Ajuster la marge pour laisser de la place au panneau */
+    width: calc(85vw - 10px); /* Ajuster la largeur de la scène */
     height: 100vh;
-    float: inline-end;
 }
+
 body{
+    background-color: #eee8d5;
+    color: #333; 
+    text-decoration: none;
+
     margin: 0px;
     height: 100%;
     width: 100%;
 }
+#Title
+{
+    font-size: x-large;   
+}
+
+.button {
+    background-color: #fdf6e3; 
+    border-color: transparent;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #f0e6d9; 
+}
+
+input[type="number"] {
+    width: 100px;
+    padding: 5px 10px;
+    margin: 5px 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f1ecda;
+}
 
 .fenetre-avant-plan
 {
+    top: 0;
+    right: 0;
+    z-index: 2;
     position: absolute;
     height: 100vh;
     width: 100vw;

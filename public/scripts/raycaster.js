@@ -60,9 +60,13 @@ function CastRaycast(event)
 }
 
 
+function GetIdNumber()
+{
+    id_number++;
+    return id_number - 1;
+}
 
 
 
 
-
-export { CastRaycast }
+export { CastRaycast , GetIdNumber}

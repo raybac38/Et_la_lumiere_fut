@@ -15,7 +15,7 @@ void imprimer_tableau(Terrain tablo, int x, int y) {
 
     for (x0 = 0; x0 < x; x0++) {
         for (y0 = 0; y0 < y; y0++) {
-            printf("%c ", tablo.tab[x0][y0]);
+            printf("%c", tablo.tab[x0][y0]);
         }
         printf("\n");
     }
@@ -127,14 +127,14 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int x = atoi(argv[1]); // Convertit le premier argument en entier
-    int y = atoi(argv[2]); // Convertit le deuxième argument en entier
+    int x = atoi(argv[2]) * 2 + 1; // Convertit le premier argument en entier
+    int y = atoi(argv[1]) * 2 + 1; // Convertit le deuxième argument en entier
     double densite = atof(argv[3]); // Convertit le troisième argument en double
 
     Terrain tablo;
 
-    printf( "%d\n", x);
     printf( "%d\n", y);
+    printf( "%d\n", x);
     tablo.size_max_x = x;
     tablo.size_max_y = y;
 

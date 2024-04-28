@@ -8,16 +8,26 @@ const fs = require('fs');
 class Dimac {
 
     constructor() {
+
+        this.tableau_correspondance = []
+
         this.nb_litteraux = 0;
         this.clauses = [];
         this.nb_clause = 0;
     }
+
     AjouterLitteral(valeur)
     {
         if(Math.abs(valeur) > this.nb_litteraux)
         {
             this.nb_litteraux = Math.abs(valeur);
         }
+
+        if(!this.tableau_correspondance.includes(Math.abs(valeur)))
+        {
+            this.tableau_correspondance.push(Math.abs(valeur));
+        }
+
     }
 
     AjouterClause(clause) {
@@ -35,30 +45,34 @@ class Dimac {
         this.clauses = [];
         this.nb_clause = 0;
         this.nb_litteraux = 0;
+        this.tableau_correspondance = [];
     }
 
     ConvertToDIMACS(data) {
         let dimacs = '';
-
-        for (let i = 0; i < this.nb_clause; i++) {
-            console.log(i);
-            const clause = this.clauses[i];
+    
+        for (let clause of this.clauses) {
             let clauseString = '';
-            for (let j = 0; j < clause.length; j++) {
-                clauseString += clause[j].toString() + ' ';
+            for (let literal of clause) {
+                clauseString += (this.tableau_correspondance.indexOf(Math.abs(literal)) + 1 ) * Math.sign(literal) + ' ';
             }
             dimacs += clauseString + '0\n';
         }
-
+    
         return dimacs;
     }
+    
 
     OutputDIMACS(fileName) {
+
+        console.log(this.tableau_correspondance);
 
 
         console.log("Debut Output DIMACS");
         console.log(this.clauses);
         let dataString = this.ConvertToDIMACS(this.clauses);
+
+        console.log(dataString);
         dataString = "p cnf " + this.nb_litteraux + " " + this.nb_clause + "\n" + dataString;
 
         fs.writeFile(fileName, dataString, (err) => {
@@ -68,6 +82,11 @@ class Dimac {
             }
             console.log(`Le fichier ${fileName} a été créé`);
         });
+    }
+
+    GetBijectionTable()
+    {
+        return this.tableau_correspondance;
     }
 }
 

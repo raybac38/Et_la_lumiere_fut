@@ -54,25 +54,14 @@ void generer_terrain(Terrain *tablo, double densite)
             {
                 tablo->tab[x0][y0] = '|';
             }
-            else if ((x0 % 2) == 0 && (y0 % 2) == 0 && x0 != tablo->size_max_x - 1 && y0 != tablo->size_max_y - 1)
-            {
-                // Génération aléatoire de '/' ou '\'
-                int random_choice = rand() % 2; // Générer un nombre aléatoire entre 0 et 1
-
-                // Vérifier si '/' peut être placé
-                if ((y0 - 1 >= 0 && tablo->tab[x0][y0 - 1] == '#') && (y0 + 1 < tablo->size_max_y && (tablo->tab[x0][y0 + 1] == ' ' || tablo->tab[x0][y0 + 1] == '/')))
-                {
-                    tablo->tab[x0][y0] = '/';
-                }
-                // Vérifier si '\' peut être placé
-                else if ((x0 - 1 >= 0 && tablo->tab[x0 - 1][y0] == '#') && (x0 + 1 < tablo->size_max_x && (tablo->tab[x0 + 1][y0] == ' ' || tablo->tab[x0 + 1][y0] == '/')))
-                {
-                    tablo->tab[x0][y0] = '\\';
-                }
-                // Si les deux peuvent être placés, choisir aléatoirement entre '/' et '\'
-                else if (random_choice == 0)
-                {
-                    tablo->tab[x0][y0] = '/';
+             else if ((x0 % 2) == 0 && (y0 % 2) == 0 && x0 != tablo->size_max_x - 1 && y0 != tablo->size_max_y - 1) {
+                if (x0 > 1 && y0 > 1 && x0 < (tablo->size_max_x)-2 && y0 < (tablo->size_max_y)-2) {
+                    if (tablo->tab[x0-2][y0+2] == '#' || tablo->tab[x0+2][y0-2] == '#') {
+                    tablo->tab[x0][y0] = '/';     
+                    }
+                    else {
+                    tablo->tab[x0][y0] = '\\'; 
+                    }
                 }
                 else
                 {
