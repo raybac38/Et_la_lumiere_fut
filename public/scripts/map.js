@@ -26,11 +26,20 @@ export class Map {
         this.Initialisaion(size_x, size_y);
         this.solution = null;
     }
-
+    
+    /**
+    *Verifie si la carte est vide
+    *@return {boolean } True si vraie
+    */
     IsMapEmpty() {
         return this.size_x === 0 && this.size_y === 0;
     }
 
+    /**
+     * Initialisation de la carte
+     * @param {Number} taille_x 
+     * @param {Number} taille_y 
+     */
     Initialisaion(taille_x, taille_y) {
         this.size_x = taille_x;
         this.size_y = taille_y;
@@ -38,6 +47,12 @@ export class Map {
         this.grille = this.CreeTableauNull(this.size_x, this.size_y);
     }
 
+    /**
+     * Initialisation d'un tableau vide
+     * @param {Number} size_x 
+     * @param {Number} size_y 
+     * @returns Un tableau vide
+     */
     CreeTableauNull(size_x, size_y) {
         let tableau = new Array(size_x);
         for (let index_x = 0; index_x < size_x; index_x++) {
@@ -47,6 +62,11 @@ export class Map {
         return tableau;
     }
 
+    /**Pass d'un offset a une Direction
+     * @param {Number} offset_x 
+     * @param {Number} offset_y 
+     * @returns une direction
+     */
     OffsetToDirection(offset_x, offset_y) {
         if (offset_x == 0 && (offset_y == 1 || offset_y == -1)) {
             return Direction.NORD;
@@ -64,7 +84,7 @@ export class Map {
 
     }
 
-    //Méthode de construction
+    //Méthode de construction d'un croisement
     AjoutCroisement(position_x, position_y) {
         /// Est ce qu'il y a une place de libre  ? important ca non ? 
 
@@ -84,6 +104,7 @@ export class Map {
         return true;
     }
 
+    // Affichage rudimentaire sur console servant pour le débugage
     AffichageConsole() {
 
         console.log("Affichage de la carte\n");
@@ -128,11 +149,12 @@ export class Map {
         }
     }
 
-
+    // Verifie si la case est vide
     IsNull(x, y) {
         return this.grille[x][y] == null;
     }
 
+    // Verifie que la case existe
     IsDefined(x, y) {
         if (this.grille[x] != undefined) {
             return this.grille[x][y] != undefined;
@@ -144,7 +166,7 @@ export class Map {
 
 
 
-    //Méthode de construction
+    //Méthode de construction d'une rue
     AjoutRue(position_x, position_y, direction) {
         /// Est ce qu'il y a une place de libre  ? important ca non ? 
         if (this.grille[position_x] === undefined || this.grille[position_x][position_y] === undefined) {
@@ -162,7 +184,7 @@ export class Map {
         return true;
     }
 
-
+    /// Verification de la validité de la map
     Verification() {
         for (let index_x = 0; index_x < this.size_x; index_x++) {
 
@@ -192,7 +214,7 @@ export class Map {
         return this.grille[x][y];
     }
 
-
+    /// Méthode de contruction d'un lampadaire sur un croisement
     AjoutLampadaire(x, y, lampadaire) {
         if (this.grille[x] === undefined || this.grille[x][y] === undefined) {
             console.log("Out of index");
@@ -245,6 +267,7 @@ export class Map {
 
     }
 
+    /// verifie que la position est vaide (Prévient OUT OF INDEX)
     IsValidPosition(x, y, map) {
         if (x < 0 || x >= map.size_x) {
             return false;
@@ -255,6 +278,7 @@ export class Map {
         return true;
     }
 
+    /// Determine si la lumère peut se propagé
     IsNotStreetOrSameDirection(x, y, direction_reference, map) {
         let cellule = map.grille[x][y];
         if (cellule instanceof Croisement) {
@@ -266,10 +290,12 @@ export class Map {
         return false;
     }
 
+    /// Fonction permettant d'effectuer un offset
     MovePosition(x, y, offset_x, offset_y) {
         return [x + offset_x, y + offset_y];
     }
 
+    // Méthode de déstruction d'un lampadaire
     SupprimeLampadaire(x, y, lampadaire) {
         if (this.grille[x] === undefined || this.grille[x][y] === undefined) {
             console.log("Out of index");
@@ -329,7 +355,6 @@ export class Map {
     GetNombreColone() {
         return this.size_x;
     }
-
 
     SupprimerMap() {
         let nombre_ligne = this.GetNombreLigne();
@@ -410,6 +435,7 @@ export class Map {
         }
     }
 
+    
     SauvegardeSolution(solution) {
         this.solution = solution;
     }
@@ -417,6 +443,7 @@ export class Map {
         this.solution = null;
     }
 
+    /// Procédure executant une série d'instruction permettant d'afficher la solution a l'écran
     ExecutionSolution() {
         if (this.solution == null) {
             return; // Pas de solution en sauvegard

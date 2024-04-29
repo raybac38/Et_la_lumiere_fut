@@ -8,6 +8,7 @@ import * as THREE from '/three.js';
 
 var id_number = 0;
 
+/// Méthode permettant de detecter quelle croisement a était cliquer
 function CastRaycast(event)
 {
     console.log("event");

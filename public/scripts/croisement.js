@@ -49,7 +49,7 @@ export class Croisement {
         mesh.position.set(this.position_x, 0, this.position_y);
     }
 
-
+    // Changement de mesh lors de l'ajout d'un lampadaire
     ChangeMesh(has_lampadaire)
     {
         scene.remove(this.mesh);
@@ -77,6 +77,7 @@ export class Croisement {
 
     }
 
+    // Suprimer la mesh de la scene
     SupprimerMesh()
     {
         scene.remove(this.mesh);
@@ -91,6 +92,7 @@ export class Croisement {
         return this.lampadaire != null;
     }
 
+    // Renvoe la lanterne
     GetLampadaire()
     {
         return this.lampadaire;
@@ -125,6 +127,7 @@ export class Croisement {
         this.ColorUpdate();
     }
 
+    /// Mise a jour de la couleur du croisement
     ColorUpdate()
     {
         let taille =  this.lumieres.length;

@@ -63,7 +63,7 @@ Compilation du SAT solveur
 
 >make all
 
--Merci de vérifier que toutes les dépendances nessessaire sont installer sur le systeme.
+
 
 Installation de Node JS
 
@@ -79,15 +79,16 @@ Installation des dépendances Node JS
 
 L'installation est maintenant terminée !
 
+/!\ Ceci est la liste des dépendances non incluses par défaut du système d'exploitation Ubuntu (Jellyfish)
+
+
 Lancement du logiciel :
 
 Pour exécuter notre programme, utilisez la commande suivante dans le répertoire racine du projet :
 
 >npm start
 
-Ensuite, ouvrez votre navigateur Internet et allez à l'adresse suivante : http://localhost:3000
-/!\ Si le port 3000 est déjà utiliser, Node JS ne se lancera pas.
-
+Le programme utilisera automatiquement un port libre, et vous pourrez accédé a l'interface en suivant le lien donnée par la console : (http://localhost:xxxxx)
 
 ## Licence
 

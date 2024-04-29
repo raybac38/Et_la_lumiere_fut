@@ -22,7 +22,7 @@ socket.on('solve', (data)=>
     map.SauvegardeSolution(data);
 })
 
-
+// Permet la gestion graphique du bouton résoudre
 function SetSolveData(new_value, data)
 {
     var solve_button = document.getElementById("solve");

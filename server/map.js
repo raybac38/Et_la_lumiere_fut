@@ -8,6 +8,11 @@ class Map {
         this.grille = this.Initialization(taille_x, taille_y);
         console.log("Map instance created.");
     }
+/**
+ * Initialise la carte avec les dimensions spécifiées.
+ * @param {number} taille_x - La taille en largeur de la carte.
+ * @param {number} taille_y - La taille en hauteur de la carte.
+ */
 
     Initialization(taille_x, taille_y) {
         console.log("Initializing Map...");
@@ -16,6 +21,12 @@ class Map {
         this.size_y = taille_y;
         this.grille = this.CreateNullArray(this.size_x, this.size_y);
     }
+/**
+ * Crée un tableau 2D rempli de valeurs nulles avec les dimensions spécifiées.
+ * @param {number} size_x - La taille en largeur du tableau.
+ * @param {number} size_y - La taille en hauteur du tableau.
+ * @returns {Array<Array>} Un tableau 2D rempli de valeurs nulles.
+ */
 
     CreateNullArray(size_x, size_y) {
         let tableau = new Array(size_x);
@@ -60,6 +71,10 @@ class Map {
         let character = this.grille[x][y];
         return rue_caractere.includes(character);
     }
+/**
+ * Charge les données brutes de la carte et initialise la carte avec ces données.
+ * @param {string} raw_data - Les données brutes de la carte sous forme de chaîne de caractères.
+ */
 
     LoadMap(raw_data) {
         console.log("Loading map...");
@@ -90,6 +105,7 @@ class Map {
         }
     }
 
+    // Verifie que la lumière peut se propagé
     IsNotStreetOrSameDirection(x, y, direction_reference, map) {
         if (map.grille[x][y] === " ") {
             console.log("case vide");
@@ -106,6 +122,11 @@ class Map {
         }
         return false; // Par défaut, ce n'est pas une rue ou un croisement
     }
+
+/**
+ * Crée les clauses DIMAC à partir de la carte actuelle.
+ * @param {Object} Dimac - L'objet DIMAC utilisé pour construire les clauses.
+ */
 
     CreateDimac(Dimac) {
         console.log("Creating DIMAC...");
@@ -149,6 +170,7 @@ class Map {
         console.log("DIMAC created.");
     }
 
+    /// Transfome un offset en une direction
     OffsetToDirection(offset_x, offset_y) {
         console.log("Demande de direction");
         if (offset_x == 0 && (offset_y == 1 || offset_y == -1)) {
@@ -167,10 +189,12 @@ class Map {
 
     }
 
+    /// Permet l'attribution d'une ID unique au croisment de la carte
     PositionToId(x, y) {
         return parseInt(x) + parseInt(y) * parseInt(this.size_x);
     }
 
+    /// Detection de tout les croisments en accès direct
     IntersectionInStraightLine(starting_x, starting_y) {
         let straight_line = [];
         console.log("debut propagation");

@@ -12,7 +12,6 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-
 const fs = require('fs');
 const { log } = require('console');
 const { escape } = require('querystring');
@@ -33,8 +32,8 @@ app.get('/three.js', (req, res) => {
 io.on('connection', socketServices.HandleConnexion);
 
 // Démarrage du serveur
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+server.listen(0, () => {
+    const PORT = server.address().port;
     console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
+    console.log(`Vous pouvez vous connecter via :http://localhost:${PORT}`);
 });
-

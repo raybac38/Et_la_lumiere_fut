@@ -1,5 +1,4 @@
 /*
-
     Script Responsable de la gestion de la communication Server / Client via Socket io
     /!\ COTER SERVEUR UNIQUEMENT
 */
@@ -18,6 +17,10 @@ var MAP = require('./map');
 var dimac = new DIMAC.Dimac();
 var map = new MAP.Map(0, 0);
 
+/**
+ * Gère la connexion d'un client socket.
+ * @param {Object} socket - Le socket de connexion du client.
+ */
 
 function HandleConnexion(socket) {
     let socketId = socket.id;
@@ -72,6 +75,11 @@ function RunPierroGenerator(taille_x, taille_y, densite_croisement, id) {
         });
     });
 }
+/**
+ * Exécute le solveur SAT sur un fichier donné.
+ * @param {string} fileName - Le nom du fichier contenant les clauses SAT.
+ * @returns {Promise<string>} Une promesse qui résout avec la sortie du solveur SAT.
+ */
 
 function RunLimat(fileName) {
     console.log("Interogation du sat solver");
@@ -95,6 +103,12 @@ function RunLimat(fileName) {
         });
     });
 };
+/**
+ * Effectue la recherche d'une solution pour la carte donnée en utilisant le solveur SAT.
+ * @param {Object} raw_data - Les données brutes de la carte.
+ * @param {Object} socket - Le socket utilisé pour communiquer avec le client.
+ * @param {string} id - L'identifiant du client.
+ */
 
 function Recherche_Solution(raw_data, socket, id) {
     let filename = "./" + id + ".cnf";
@@ -104,7 +118,8 @@ function Recherche_Solution(raw_data, socket, id) {
     console.log("Dimac created and outputing")
     dimac.OutputDIMACS(filename);
 
-    RunLimat(filename)
+    setTimeout(() => {
+        RunLimat(filename)
         .then((data) => {
             console.log("Data READED");
             console.log(data);
@@ -113,7 +128,7 @@ function Recherche_Solution(raw_data, socket, id) {
         .catch((error) => {
             console.log("Error");
         });
-
+    }, 1000);
     dimac.ClearClause();
 
 
