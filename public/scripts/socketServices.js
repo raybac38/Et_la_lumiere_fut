@@ -16,27 +16,46 @@ function Request_New_Map(size_x, size_y, density)
 
 socket.on('solve', (data)=>
 {
-    SetSolveData(true);
+    SetSolveData(true, data);
     console.log("Solution de l'énigme est arrivé");
     console.log(data);
     map.SauvegardeSolution(data);
 })
 
 
-function SetSolveData(new_value)
+function SetSolveData(new_value, data)
 {
     var solve_button = document.getElementById("solve");
 
     hasSolveData = new_value;
 
+    var solve_state = document.getElementById("SolveState");
+
     if (hasSolveData) {
-        solve_button.style.borderColor = '#859900';
-        solve_button.disabled = false; 
-        solve_button.style.opacity = 1; 
+
+        if(data[2] == "S")
+        {
+            solve_button.style.borderColor = '#859900';
+            solve_button.disabled = false; 
+            solve_button.style.opacity = 1; 
+            solve_state.textContent = "SATISFIABLE";
+
+        }
+        else
+        {
+            solve_button.style.borderColor = '#dc322f';
+            solve_button.disabled = true; 
+            solve_button.style.opacity = 0.5; 
+            solve_state.textContent = "UNSATISFIABLE";
+
+        }
+
     } else {
         solve_button.style.borderColor = 'transparent';
         solve_button.disabled = true; 
         solve_button.style.opacity = 0.5; 
+        solve_state.textContent = " ";
+
     }
 }
 

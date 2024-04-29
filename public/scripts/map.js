@@ -218,9 +218,6 @@ export class Map {
         // Propagation de la lumiere
 
         let lumiere = lampadaire.CreeLumiere();
-        console.log(lumiere);
-
-        console.log("lumiere : ", lumiere);
 
         const PropagationLumiere = (starting_x, starting_y, offsets, lumiere) => {
             for (const [offset_x, offset_y] of offsets) {
@@ -228,7 +225,6 @@ export class Map {
                 let y = parseInt(starting_y) + parseInt(offset_y);
                 let direction_reference = this.OffsetToDirection(offset_x, offset_y);
 
-                console.log("Avant le tour de boucle");
                 while (this.IsValidPosition(x, y, this) && this.IsNotStreetOrSameDirection(x, y, direction_reference, this)) {
 
                     this.grille[x][y].AjouterLumiere(lumiere);
@@ -260,7 +256,6 @@ export class Map {
     }
 
     IsNotStreetOrSameDirection(x, y, direction_reference, map) {
-        console.log(map, x, y);
         let cellule = map.grille[x][y];
         if (cellule instanceof Croisement) {
             return true;
@@ -300,9 +295,6 @@ export class Map {
         // Propagation de la lumiere
 
         let lumiere = lampadaire.CreeLumiere();
-        console.log(lumiere);
-
-        console.log("lumiere : ", lumiere);
 
         const PropagationLumiere = (starting_x, starting_y, offsets, lumiere) => {
             for (const [offset_x, offset_y] of offsets) {
@@ -310,7 +302,6 @@ export class Map {
                 let y = parseInt(starting_y) + parseInt(offset_y);
                 let direction_reference = this.OffsetToDirection(offset_x, offset_y);
 
-                console.log("Avant le tour de boucle");
                 while (this.IsValidPosition(x, y, this) && this.IsNotStreetOrSameDirection(x, y, direction_reference, this)) {
 
                     this.grille[x][y].SupprimerLumiere(lumiere);
@@ -430,6 +421,7 @@ export class Map {
         if (this.solution == null) {
             return; // Pas de solution en sauvegard
         }
+        console.log("Execution Solution")
 
         let temporaire = this.solution.split("\n");
 
@@ -441,31 +433,30 @@ export class Map {
 
         /// Solution a montrer
 
-        let liste = temporaire[1];
+        let liste = temporaire[1].split(" ").map(Number);
         let indice = 0;
 
-        for (let index_y = 0; index_y < this.GetNombreLigne(); index_y++) {
-
+        for (let index_y = 0 ; index_y < this.GetNombreLigne(); index_y++) {
+            
             for (let index_x = 0; index_x < this.GetNombreColone(); index_x++) {
-
+            
                 if (this.grille[index_x][index_y] instanceof Croisement) {
                     let lampadaire = null;
                     let croisement = this.GetCroisement(index_x, index_y);
-
+                    
                     if (this.CheckLampadaire(index_x, index_y)) {
                         lampadaire = croisement.GetLampadaire();
                     }
 
-                    if (Math.sign(liste[indice]) == -1 && lampadaire != null) {
+                    if (Math.sign(liste[indice]) == 0 && lampadaire != null) {
                         this.SupprimeLampadaire(index_x, index_y, lampadaire);
                     }
                     else if (Math.sign(liste[indice]) == 1 && lampadaire == null) {
                         lampadaire = new Lampadaire(CONSTANTE.Couleurs.BLANC, GetIdNumber());
-                        
+                                                
                         this.AjoutLampadaire(index_x, index_y, lampadaire);
                     }
                     indice++;
-
                 }
 
             }

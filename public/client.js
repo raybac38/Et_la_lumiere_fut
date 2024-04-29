@@ -1,7 +1,5 @@
 import * as THREE from '/three.js'
 
-import * as TERRAIN from './scripts/terrain.js';
-
 import * as MAP from './scripts/map.js';
 
 // Event listeneer

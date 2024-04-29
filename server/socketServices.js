@@ -99,7 +99,9 @@ function RunLimat(fileName) {
 function Recherche_Solution(raw_data, socket, id) {
     let filename = "./" + id + ".cnf";
     map.LoadMap(raw_data);
+    console.log("Map loaded and creating dimac");
     map.CreateDimac(dimac);
+    console.log("Dimac created and outputing")
     dimac.OutputDIMACS(filename);
 
     RunLimat(filename)

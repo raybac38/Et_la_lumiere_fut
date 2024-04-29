@@ -10,9 +10,10 @@
 }
 
 #Scene {
+    position: absolute;
+    right: 0;
     background-color: #eee8d5;
-    margin-left: 15vw; /* Ajuster la marge pour laisser de la place au panneau */
-    width: calc(85vw - 10px); /* Ajuster la largeur de la scène */
+    width: calc(85vw - 50px); /* Ajuster la largeur de la scène */
     height: 100vh;
 }
 

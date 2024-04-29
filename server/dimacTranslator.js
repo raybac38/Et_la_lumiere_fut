@@ -54,7 +54,7 @@ class Dimac {
         for (let clause of this.clauses) {
             let clauseString = '';
             for (let literal of clause) {
-                clauseString += (this.tableau_correspondance.indexOf(Math.abs(literal)) + 1 ) * Math.sign(literal) + ' ';
+                clauseString += ((this.tableau_correspondance.indexOf(Math.abs(literal)) + 1 ) * Math.sign(literal)) + ' ';
             }
             dimacs += clauseString + '0\n';
         }
@@ -66,7 +66,6 @@ class Dimac {
     OutputDIMACS(fileName) {
 
         console.log(this.tableau_correspondance);
-
 
         console.log("Debut Output DIMACS");
         console.log(this.clauses);

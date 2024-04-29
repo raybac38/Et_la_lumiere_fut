@@ -67,15 +67,18 @@ class Map {
 
         if (data.length > 2) {
             console.log("Initializing map with size...");
-            this.Initialization(parseInt(data[0]), parseInt(data[1]));
+            this.Initialization(parseInt(data[1]), parseInt(data[0]));
             console.log(data);
             data.splice(0, 2);
 
             console.log(data);
+
+
             
             for (let y = 0; y < this.size_y; y++) {
                 for (let x = 0; x < this.size_x; x++) {
-                    this.grille[y][x] = data[x][y];
+                    console.log(x, y, this.size_x, this.size_y);
+                    this.grille[x][y] = data[y][x];
                 }
             }
             
@@ -106,15 +109,15 @@ class Map {
 
     CreateDimac(Dimac) {
         console.log("Creating DIMAC...");
-        for (let x = 0; x < this.GetNumberOfColumns(); x++) {
-            for (let y = 0; y < this.GetNumberOfRows(); y++) {
+        for (let y = 0; y < this.GetNumberOfRows(); y++) {
+            for (let x = 0; x < this.GetNumberOfColumns(); x++) {
                 let clause = [];
                 let clause_dimac = [];
 
 
                 if (this.IsCroisement(x, y)) {
                     //  Logique de croisement
-                    console.log("logique croisement");
+                    console.log("logique croisement", x, y);
                     clause = this.IntersectionInStraightLine(x, y);
 
                     if(clause.length == 0) continue;
@@ -137,9 +140,6 @@ class Map {
 
                     }
                     Dimac.AjouterClause(clause_dimac);
-                    Dimac.AjouterLitteral(this.PositionToId(x, y ));
-
-
 
                 }
                 
@@ -150,19 +150,21 @@ class Map {
     }
 
     OffsetToDirection(offset_x, offset_y) {
+        console.log("Demande de direction");
         if (offset_x == 0 && (offset_y == 1 || offset_y == -1)) {
             return CONSTANTE.Direction.NORD;
         }
         if (offset_x == 1 && offset_y == 1 || offset_x == -1 && offset_y == -1) {
-            return CONSTANTE.Direction.NORD_EST;
+            return CONSTANTE.Direction.SUD_EST;
         }
         if ((offset_x == 1 || offset_x == -1) && offset_y == 0) {
             return CONSTANTE.Direction.EST;
         }
         if (offset_x == -1 && offset_y == 1 || offset_x == 1 && offset_y == -1) {
-            return CONSTANTE.Direction.SUD_EST;
+            return CONSTANTE.Direction.NORD_EST;
         }
-        throw new Error('Direction non reconnue');
+        throw new console.error('Direction non reconnu');
+
     }
 
     PositionToId(x, y) {
@@ -172,6 +174,7 @@ class Map {
     IntersectionInStraightLine(starting_x, starting_y) {
         let straight_line = [];
         console.log("debut propagation");
+        console.log("Point de depart",starting_x, starting_y);
         const LightPropagation = (starting_x, starting_y, offsets) => {
 
 
@@ -179,12 +182,17 @@ class Map {
                 let x = parseInt(starting_x) + parseInt(offset_x);
                 let y = parseInt(starting_y) + parseInt(offset_y);
 
+                console.log("offset", offset_x, offset_y);
+                console.log(this.OffsetToDirection);
+
                 let direction_reference = this.OffsetToDirection(offset_x, offset_y);
 
                 console.log("Nous somme au coordonnée ", starting_x, starting_y);
                 console.log("Nous regardons au ", x, y);
                 console.log("Nous somme sur ", this.grille[starting_x][starting_y]);
-                console.log("Nous voyons", this.grille[x][y], "/");
+                console.log("Nous voyons", this.grille[x][y], "l");
+                console.log("D ref: ", direction_reference);
+
 
                 if(this.IsRue(starting_x, starting_y))
                 {
@@ -216,10 +224,10 @@ class Map {
                 case "-":
                     offsets = [[1, 0], [-1, 0]];
                     break;
-                case "/":
+                case "\\":
                     offsets = [[1, 1], [-1, -1]];
                     break;
-                case "\\":
+                case "/":
                     offsets = [[1, -1], [-1, 1]];
                     break;
                 default:

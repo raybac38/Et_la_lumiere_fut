@@ -127,7 +127,6 @@ export class Croisement {
 
     ColorUpdate()
     {
-        console.log("Croisement Color update", this.name);
         let taille =  this.lumieres.length;
         if(taille == 0)
         {
@@ -137,7 +136,6 @@ export class Croisement {
         {
             let couleur = this.lumieres[taille - 1].GetColor();
             this.material.color.set(CouleurHexa[couleur]);
-            console.log("nouvelle couleur ", CouleurHexa[couleur]);
         }
     }
 
@@ -157,9 +155,6 @@ export class Croisement {
     Verification() {
         return ! (this.CheckLampadaire() && this.lumieres.length != 1)
     }
-
-
-
 
 }
 
